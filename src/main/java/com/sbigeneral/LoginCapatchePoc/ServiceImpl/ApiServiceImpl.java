@@ -37,7 +37,7 @@ public class ApiServiceImpl implements ApiService {
     public ResponseEntity<String> getReport(String employeeId) {
         
         try {
-			String API_URL = "https://uat-dil.sbigen.in/services/PINModule/fetchPINDetails/v1";
+			String API_URL = "https://dil.sbigen.in/services/PINModule/fetchPINDetails/v1";
 			String decision = "Extra KM Requested|Extra KM Approved|Case Recommend|Case Reject";
 
 			String encodedDecision = URLEncoder.encode(decision, "UTF-8");
@@ -85,7 +85,7 @@ public class ApiServiceImpl implements ApiService {
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		Class<Map<String, List<PinDetails>>> responseType = (Class<Map<String, List<PinDetails>>>) (Class<?>) Map.class;
 
-		String apiUrl = "https://uat-dil.sbigen.in:443/services/PINModule/fetchPINDetails/v1?PINNumber=" + pinNumber;
+		String apiUrl = "https://dil.sbigen.in:443/services/PINModule/fetchPINDetails/v1?PINNumber=" + pinNumber;
 		System.out.println(apiUrl);
 
 		ResponseEntity<Map<String, List<PinDetails>>> responseEntity = restTemplate.exchange(apiUrl, HttpMethod.GET,

@@ -11,56 +11,68 @@ import com.sbigeneral.LoginCapatchePoc.Repository.UserDetailsRepo;
 import com.sbigeneral.LoginCapatchePoc.Service.UserDetailsService;
 import com.sbigeneral.LoginCapatchePoc.model.UserModel;
 
-
-
-
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
 	@Autowired
 	UserDetailsRepo userDetailsRepo;
+
 	@Override
 	public UserDetails getUserByEmployeeID(String employeeId) {
-		
+
 		UserDetails byEmployeeId = userDetailsRepo.findByEmployeeId(employeeId);
-		
+
 		return byEmployeeId;
 	}
-	
+
 //	
 	@Override
 	public UserDetails login(UserModel user) {
-		// TODO Auto-generated method stub
-		UserDetails checkLogin = userDetailsRepo.checkLogin(user.getEmployeeId() , user.getPassword());
-		
-		System.out.println("the session count is"  + checkLogin.getSessionCount());
-		// new code very imp
-		if(checkLogin.getSessionCount() > 0) {
-			throw new IllegalStateException("User is already logged in from other session")	;
+		UserDetails checkLogin;
+		try {
+			checkLogin = userDetailsRepo.checkLogin(user.getEmployeeId(), user.getPassword());
+			System.out.println("the session count is" + checkLogin.getSessionCount());
 			
+			try {
+				if (checkLogin.getSessionCount() == 0) {
+					checkLogin.setSessionCount(1);
+					userDetailsRepo.save(checkLogin);
+				}
+				else if (checkLogin.getSessionCount() > 0) {
+					throw new IllegalStateException("User is already logged in from other session");
+				
+					
+				} 
+					
+				
+			} catch (Exception e) {
+				// TODO: handle exception
+				throw new IllegalStateException("User is already logged in from other session");
+			}
 			
+		} 
+		catch (IllegalStateException e) {
+			// TODO: handle exception
+			throw new IllegalStateException("User is already logged in from other session");
 		}
-		
-		  checkLogin.setSessionCount(1);
-		  userDetailsRepo.save(checkLogin);
-		  
-		  System.out.println("the session count is"  + checkLogin.getSessionCount());
-		return checkLogin ;
-	}
-	
-    public void logout(String employeeId) {
-        UserDetails existingUser = userDetailsRepo.findByEmployeeId(employeeId);
+		catch (Exception e ) {
+			throw new IllegalStateException("Wrong Credentials");
+		}
 
-        if (existingUser != null) {
-            existingUser.setSessionCount(0);
-            userDetailsRepo.save(existingUser);
-        }
-    }
-	
-	
-	
-	
-	
+		System.out.println("the session count is" + checkLogin.getSessionCount());
+		return checkLogin;
+
+	}
+
+	public void logout(String employeeId) {
+		UserDetails existingUser = userDetailsRepo.findByEmployeeId(employeeId);
+
+		if (existingUser != null) {
+			existingUser.setSessionCount(0);
+			userDetailsRepo.save(existingUser);
+		}
+	}
+
 ///////////////////////////////// login page with simultaneously login api /////////////////////////////	
 //	public UserDetails login(UserModel user) {
 //        UserDetails existingUser = userDetailsRepo.checkLogin(user.getEmployeeId(), user.getPassword());
@@ -92,7 +104,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 //        }
 //    }
 
-    
-    // new code 
+	// new code
 
 }

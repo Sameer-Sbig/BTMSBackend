@@ -17,7 +17,7 @@ public class AppConfig {
 	@Bean
 	public CorsConfigurationSource corsConfigurationSource() {
 		CorsConfiguration configuration = new CorsConfiguration();
-		configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200","https://secure.sbigeneral.in","http://localhost:5173", "http://172.18.115.105:7003/BMS", "https://ansappsuat.sbigen.in")); //
+		configuration.setAllowedOrigins(Arrays.asList("https://commonsecure.sbigen.in/VBIM/","http://172.16.232.92:7002/PIN","http://localhost:4200","https://secure.sbigeneral.in","http://localhost:5173", "http://172.18.115.105:7003/BMS", "https://ansappsuat.sbigen.in")); //
 
 		configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
 		

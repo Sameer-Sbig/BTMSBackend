@@ -91,6 +91,7 @@ import com.sbigeneral.LoginCapatchePoc.Service.Decrypt;
 import com.sbigeneral.LoginCapatchePoc.Service.Encrypt;
 import com.sbigeneral.LoginCapatchePoc.Service.UserDetailsService;
 import com.sbigeneral.LoginCapatchePoc.Service.UserService;
+import com.sbigeneral.LoginCapatchePoc.ServiceImpl.VendorLogoutServiceImpl;
 //import com.sbigeneral.LoginCapatchePoc.ServiceImpl.CustomUserDetailsService;
 import com.sbigeneral.LoginCapatchePoc.Utill.CaptchaUtils;
 import com.sbigeneral.LoginCapatchePoc.Utill.EmailSender;
@@ -110,7 +111,7 @@ import sun.net.www.protocol.https.Handler;
 
 @Controller
 @CrossOrigin(origins = { "http://localhost:4200", "https://ansappsuat.sbigen.in", "http://localhost:5173",
-		"http://172.18.115.105:7003/BMS" })
+		"http://172.18.115.105:7003/BMS" , "http://172.16.232.92:7002/PIN","https://commonsecure.sbigen.in/VBIM/"})
 @PropertySource("classpath:log4j2.properties")
 public class loginController {
 	@Autowired
@@ -137,6 +138,9 @@ public class loginController {
 	@Autowired
 	UserDetailsService userDetailsService;
 
+	@Autowired
+	VendorLogoutServiceImpl vendorLogoutScheduler;
+	
 	private static final Logger logger = LogManager.getLogger(loginController.class);
 
 	@Autowired
@@ -404,39 +408,63 @@ public class loginController {
 
 	@CrossOrigin
 	@PostMapping("/loginpage1")
-	public ResponseEntity<?> login(@RequestBody Map<String, String> payload) {
-		logger.info("Received encrypted request body");
+	public ResponseEntity<?> login(@RequestBody Map<String, String> payload , HttpServletRequest request) {
+		System.out.println("Headers names are : "+request.getHeader("ClientID"));
+	  String validHeader = request.getHeader("ClientID");
+	  
+//	  if(validHeader.equals("abKJFeuwfdzcxnbzkjXnxcbowdhoihkjsaaiuEQWYUBNZCBXXCZIQ8EUSCKVDBNMXBZBXNCB")) {
+		  System.out.println("Correct Header");
+		  
+		  logger.info("Received encrypted request body");
 
-		String encryptedText = payload.get("encryptedText");
-		String base64Iv = payload.get("base64iv");
-		String base64Key = payload.get("key");
+			String encryptedText = payload.get("encryptedText");
+			String base64Iv = payload.get("base64iv");
+			String base64Key = payload.get("key");
 
-		ResponseEntity<?> response;
-		try {
-			// Decrypt the payload
-			String decryptedPayload = decryptService.decrypt(encryptedText, base64Iv, base64Key);
-			System.out.println("Decrypted Payload: " + decryptedPayload);
+			ResponseEntity<?> response;
+			try {
+				// Decrypt the payload
+				String decryptedPayload = decryptService.decrypt(encryptedText, base64Iv, base64Key);
+				System.out.println("Decrypted Payload: " + decryptedPayload);
 
-			// Convert the decrypted JSON string to UserModel
-			UserModel user = objectMapper.readValue(decryptedPayload, UserModel.class);
+				// Convert the decrypted JSON string to UserModel
+				UserModel user = objectMapper.readValue(decryptedPayload, UserModel.class);
 
-			// Process the decrypted user data
-			UserDetails loggedInUser = userDetailsService.login(user);
-			if (loggedInUser != null) {
-				Map<String, String> employee = new HashMap<>();
-				employee.put("vendorCode", loggedInUser.getEmployeeId());
-				employee.put("name", loggedInUser.getName());
+				// Process the decrypted user data
+				
+				UserDetails loggedInUser = userDetailsService.login(user);
+				if (loggedInUser != null) {
+					Map<String, String> employee = new HashMap<>();
+					employee.put("vendorCode", loggedInUser.getEmployeeId());
+					employee.put("name", loggedInUser.getName());
+					vendorLogoutScheduler.scheduleLogout(loggedInUser.getEmployeeId());
 
-				String encryptedResponse = encrypt.encrypt(employee, base64Key, base64Iv);
-				response = new ResponseEntity<>(encryptedResponse, HttpStatus.OK);
-			} else {
-				response = new ResponseEntity<>("User does not exist", HttpStatus.NOT_FOUND);
+					String encryptedResponse = encrypt.encrypt(employee, base64Key, base64Iv);
+					response = new ResponseEntity<>(encryptedResponse, HttpStatus.OK);
+				} else {
+					response = new ResponseEntity<>("User does not exist", HttpStatus.NOT_FOUND);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				System.out.println(e.getMessage());
+				if(e.getMessage() == "Wrong Credentials") {
+				response = new ResponseEntity<>(e.getMessage(), HttpStatus.FORBIDDEN);
+				}
+				else {
+					response = new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+				}
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			response = new ResponseEntity<>("Internal Server Error", HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-		return response;
+			return response;
+//	  }else {
+//		  // Extract the specific fields you need from the errorBody if necessary
+//	        Map<String, String> errorResponse = new HashMap<>();
+//	        errorResponse.put("message", "Wrong client ID found ");
+//	          errorResponse.put("statusCode", "400");
+//	          return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+//
+//	  }
+		
+		
 	}
 	
 	@CrossOrigin
@@ -555,8 +583,8 @@ public class loginController {
 		System.out.println(obj);
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
-
-		String apiUrl = "https://uat-dil.sbigen.in/services/PINModule/updateCase";
+			
+		String apiUrl = "https://dil.sbigen.in/services/PINModule/updateCase";
 		HttpEntity<UploadImage> requestEntity = new HttpEntity<UploadImage>(obj, headers);
 		Class<Map<String, String>> responseType = (Class<Map<String, String>>) (Class<?>) Map.class;
 		ResponseEntity<Map<String, String>> responseEntity = restTemplate.exchange(apiUrl, HttpMethod.POST,
@@ -597,7 +625,7 @@ public class loginController {
 		// TODO: process POST request
 		System.out.println(entity);
 		ResponseEntity<?> response = null;
-		String apiUrl = "https://uat-dil.sbigen.in/services/PINModule/ExtraKMRequest";
+		String apiUrl = "https://dil.sbigen.in/services/PINModule/ExtraKMRequest";
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
 
@@ -664,7 +692,7 @@ public class loginController {
 	    HttpHeaders headers = new HttpHeaders();
 	    headers.setContentType(MediaType.APPLICATION_JSON);
 
-	    String apiUrl = "https://uat-dil.sbigen.in/services/PINModule/updateCase";
+	    String apiUrl = "https://dil.sbigen.in/services/PINModule/updateCase";
 	    HttpEntity<UploadImage> requestEntity = new HttpEntity<>(obj, headers);
 
 	    try {
@@ -704,7 +732,7 @@ public class loginController {
 	public ResponseEntity<?> extraKmRequestedMethod1(@RequestBody ExtraKmModel entity) {
 		System.out.println(entity);
 		
-	    String apiUrl = "https://uat-dil.sbigen.in/services/PINModule/ExtraKMRequest";
+	    String apiUrl = "https://dil.sbigen.in/services/PINModule/ExtraKMRequest";
 	    HttpHeaders headers = new HttpHeaders();
 	    headers.setContentType(MediaType.APPLICATION_JSON);
 	    HttpEntity<ExtraKmModel> requestEntity = new HttpEntity<>(entity, headers);
