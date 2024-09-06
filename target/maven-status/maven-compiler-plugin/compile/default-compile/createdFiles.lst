@@ -32,6 +32,7 @@ com\sbigeneral\LoginCapatchePoc\Service\RenewalRmsReportService.class
 com\sbigeneral\LoginCapatchePoc\Controller\RenewalMisReportController.class
 com\sbigeneral\LoginCapatchePoc\model\DocSearchResponse$Fault.class
 com\sbigeneral\LoginCapatchePoc\Utill\CustomAuthenticationFailureHandler.class
+com\sbigeneral\LoginCapatchePoc\config\RateLimitingConfig.class
 com\sbigeneral\LoginCapatchePoc\Controller\DashboardController.class
 com\sbigeneral\LoginCapatchePoc\Exception\GlobalExceptionHandler.class
 com\sbigeneral\LoginCapatchePoc\model\BirthdayWiseReportModel.class
@@ -49,8 +50,10 @@ com\sbigeneral\LoginCapatchePoc\config\WebLogicConfig.class
 com\sbigeneral\LoginCapatchePoc\model\DocSearchResponse$Response.class
 com\sbigeneral\LoginCapatchePoc\Repository\UserDetailsRepo.class
 com\sbigeneral\LoginCapatchePoc\Service\RenewalMisReportService.class
+com\sbigeneral\LoginCapatchePoc\Service\VendorLogoutService.class
 com\sbigeneral\LoginCapatchePoc\Entity\ResponseMessage.class
 com\sbigeneral\LoginCapatchePoc\model\ExtraKmModel.class
+com\sbigeneral\LoginCapatchePoc\ServiceImpl\VendorLogoutServiceImpl.class
 com\sbigeneral\LoginCapatchePoc\model\JwtResponse.class
 com\sbigeneral\LoginCapatchePoc\Controller\loginController.class
 com\sbigeneral\LoginCapatchePoc\ServletInitializer.class

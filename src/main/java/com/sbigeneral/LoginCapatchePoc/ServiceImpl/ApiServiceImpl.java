@@ -37,9 +37,9 @@ public class ApiServiceImpl implements ApiService {
     public ResponseEntity<String> getReport(String employeeId) {
         
         try {
-			String API_URL = "https://dil.sbigen.in/services/PINModule/fetchPINDetails/v1";
+			String API_URL = "https://uat-dil.sbigen.in/services/PINModule/fetchPINDetails/v1";
 			String decision = "Extra KM Requested|Extra KM Approved|Case Recommend|Case Reject";
-
+		
 			String encodedDecision = URLEncoder.encode(decision, "UTF-8");
 			String apiUrl = API_URL + "?VendorCode=" + employeeId + "&Decision=" + encodedDecision;
 
@@ -85,7 +85,7 @@ public class ApiServiceImpl implements ApiService {
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		Class<Map<String, List<PinDetails>>> responseType = (Class<Map<String, List<PinDetails>>>) (Class<?>) Map.class;
 
-		String apiUrl = "https://dil.sbigen.in:443/services/PINModule/fetchPINDetails/v1?PINNumber=" + pinNumber;
+		String apiUrl = "https://uat-dil.sbigen.in:443/services/PINModule/fetchPINDetails/v1?PINNumber=" + pinNumber;
 		System.out.println(apiUrl);
 
 		ResponseEntity<Map<String, List<PinDetails>>> responseEntity = restTemplate.exchange(apiUrl, HttpMethod.GET,
@@ -99,17 +99,20 @@ public class ApiServiceImpl implements ApiService {
 
 	@Override
 	public String getLoginImage() {
-		
-		//uat path == /u02/Oracle/Middleware/Oracle_Home/user_projects/domains/base_domain
-		String loginPage = "";
-			try {
-			loginPage = new String(Files.readAllBytes(Paths.get("/u01/Oracle/Middleware/Oracle_Home/user_projects/domains/base_domain/Sameer/login.txt")));
-			System.out.println(loginPage);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return loginPage;
+////		/u02/Oracle/Middleware/Oracle_Home/user_projects/domains/base_domain
+
+		//uat path == 
+		//prod path = /u01/Oracle/Middleware/Oracle_Home/user_projects/domains/base_domain/Sameer/
+				String loginPage = "";
+					try {
+					System.out.println();
+					loginPage = new String(Files.readAllBytes(Paths.get("/u02/Oracle/Middleware/Oracle_Home/user_projects/domains/base_domain/login.txt")));
+					System.out.println(loginPage);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				return loginPage;
 	}
     
 }

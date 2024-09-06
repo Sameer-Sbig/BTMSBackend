@@ -105,7 +105,7 @@ import com.sbigeneral.LoginCapatchePoc.model.ChangePasswordRequest;
 import com.sbigeneral.LoginCapatchePoc.model.ExtraKmModel;
 import com.sbigeneral.LoginCapatchePoc.model.JwtResponse;
 import com.sbigeneral.LoginCapatchePoc.model.UserModel;
-
+import io.github.bucket4j.Bucket;
 import cn.apiclub.captcha.Captcha;
 import sun.net.www.protocol.https.Handler;
 
@@ -133,6 +133,11 @@ public class loginController {
 	private GCMUtilty gcmUtility;
 	@Autowired
 	private ApiService apiService;
+	
+	@Autowired
+	Bucket bucket;
+	
+	
 	private static RestTemplate restTemplate = new RestTemplate();
 
 	@Autowired
@@ -155,12 +160,7 @@ public class loginController {
 	@Autowired
 	private FormValidation validation;
 
-//	@Autowired
-//	private AuthenticationManager authenticationManager;
-//	@Autowired
-//	private JwtUtil jwtUtil;
-//	@Autowired
-//	private CustomUserDetailsService userDetailsService1;
+
 
 	@Autowired
 	UserDetailsRepo userDetailsRepo;
@@ -349,7 +349,7 @@ public class loginController {
 		sessionRegistry.getAllSessions(session, false).forEach(SessionInformation::expireNow);
 	}
 
-	/// ***************************************Sameer Code
+	/// ***************************************Sameer Code ************************************************************
 	/// ************************************////////////////////////////////////
 
 	@CrossOrigin
@@ -375,63 +375,85 @@ public class loginController {
 		return response;
 	}
 
-	@CrossOrigin
-	@PostMapping("/loginpage")
-	public ResponseEntity<?> login(@RequestBody UserModel user) {
-		logger.info("Fetching login details for PIN username: {}", user);
-
-		ResponseEntity<?> response = null;
-		try {
-			UserDetails loggedInUser = userDetailsService.login(user);
-
-			if (loggedInUser != null) {
-				Map<String, String> employee = new HashMap<String, String>();
-				employee.put("vendorCode", loggedInUser.getEmployeeId());
-				employee.put("name", loggedInUser.getName());
-
-//		            response = new ResponseEntity<>(encryptedResponse, HttpStatus.OK);
-
-				response = new ResponseEntity<Map<String, String>>(employee, HttpStatus.OK);
-			} else {
-				response = new ResponseEntity<String>("User does not exist", HttpStatus.NOT_FOUND);
-
-			}
-
-		} catch (Exception e) {
-			// TODO: handle exception
-			System.out.println(e);
-			response = new ResponseEntity<String>("Internal Server Error", HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-		return response;
-
-	}
-
+	
+//	@CrossOrigin
+//	@PostMapping("/loginpage1")
+//	public ResponseEntity<?> login(@RequestBody Map<String, String> payload , HttpServletRequest request) {
+//		System.out.println("Headers names are : "+request.getHeader("ClientID"));
+//	  String validHeader = request.getHeader("ClientID");
+//	  
+////	  if(validHeader.equals("abKJFeuwfdzcxnbzkjXnxcbowdhoihkjsaaiuEQWYUBNZCBXXCZIQ8EUSCKVDBNMXBZBXNCB")) {
+//		  System.out.println("Correct Header");
+//		  
+//		  logger.info("Received encrypted request body");
+//
+//			String encryptedText = payload.get("encryptedText");
+//			String base64Iv = payload.get("base64iv");
+//			String base64Key = payload.get("key");
+//
+//			ResponseEntity<?> response;
+//			try {
+//				
+//				String decryptedPayload = decryptService.decrypt(encryptedText, base64Iv, base64Key);
+//				System.out.println("Decrypted Payload: " + decryptedPayload);
+//
+//					UserModel user = objectMapper.readValue(decryptedPayload, UserModel.class);
+//
+//				
+//				UserDetails loggedInUser = userDetailsService.login(user);
+//				if (loggedInUser != null) {
+//					Map<String, String> employee = new HashMap<>();
+//					employee.put("vendorCode", loggedInUser.getEmployeeId());
+//					employee.put("name", loggedInUser.getName());
+//					vendorLogoutScheduler.scheduleLogout(loggedInUser.getEmployeeId());
+//
+//					String encryptedResponse = encrypt.encrypt(employee, base64Key, base64Iv);
+//					response = new ResponseEntity<>(encryptedResponse, HttpStatus.OK);
+//				} else {
+//					response = new ResponseEntity<>("User does not exist", HttpStatus.NOT_FOUND);
+//				}
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//				System.out.println(e.getMessage());
+//				if(e.getMessage() == "Wrong Credentials") {
+//				response = new ResponseEntity<>(e.getMessage(), HttpStatus.FORBIDDEN);
+//				}
+//				else {
+//					response = new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+//				}
+//			}
+//			return response;
+//
+//		
+//		
+//	}
+	
+	
 	@CrossOrigin
 	@PostMapping("/loginpage1")
-	public ResponseEntity<?> login(@RequestBody Map<String, String> payload , HttpServletRequest request) {
-		System.out.println("Headers names are : "+request.getHeader("ClientID"));
-	  String validHeader = request.getHeader("ClientID");
-	  
+	public ResponseEntity<?> login(@RequestBody Map<String, String> payload, HttpServletRequest request) {
+		ResponseEntity<?> response;
+		if (bucket.tryConsume(1)) {
+			System.out.println("Headers names are : " + request.getHeader("ClientID"));
+			String validHeader = request.getHeader("ClientID");
+
 //	  if(validHeader.equals("abKJFeuwfdzcxnbzkjXnxcbowdhoihkjsaaiuEQWYUBNZCBXXCZIQ8EUSCKVDBNMXBZBXNCB")) {
-		  System.out.println("Correct Header");
-		  
-		  logger.info("Received encrypted request body");
+			System.out.println("Correct Header");
+
+			logger.info("Received encrypted request body");
 
 			String encryptedText = payload.get("encryptedText");
 			String base64Iv = payload.get("base64iv");
 			String base64Key = payload.get("key");
 
-			ResponseEntity<?> response;
+//			ResponseEntity<?> response;
 			try {
-				// Decrypt the payload
+
 				String decryptedPayload = decryptService.decrypt(encryptedText, base64Iv, base64Key);
 				System.out.println("Decrypted Payload: " + decryptedPayload);
 
-				// Convert the decrypted JSON string to UserModel
 				UserModel user = objectMapper.readValue(decryptedPayload, UserModel.class);
 
-				// Process the decrypted user data
-				
 				UserDetails loggedInUser = userDetailsService.login(user);
 				if (loggedInUser != null) {
 					Map<String, String> employee = new HashMap<>();
@@ -440,32 +462,45 @@ public class loginController {
 					vendorLogoutScheduler.scheduleLogout(loggedInUser.getEmployeeId());
 
 					String encryptedResponse = encrypt.encrypt(employee, base64Key, base64Iv);
-					response = new ResponseEntity<>(encryptedResponse, HttpStatus.OK);
+					
+//					response = new ResponseEntity<>(encryptedResponse, HttpStatus.OK );
+					response = ResponseEntity.ok()
+	                        .header("Content-Security-Policy", "default-src 'self'; script-src 'self' https://trustedscripts.example.com; object-src 'none';")
+	                        .body(encryptedResponse);
+					
+					
 				} else {
-					response = new ResponseEntity<>("User does not exist", HttpStatus.NOT_FOUND);
+//					response = new ResponseEntity<>("User does not exist", HttpStatus.NOT_FOUND);
+					response = ResponseEntity.status(HttpStatus.NOT_FOUND)
+							.header("Content-Security-Policy", "default-src 'self'; script-src 'self' https://trustedscripts.example.com; object-src 'none';")
+							.body("User Does Not Exist");
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
 				System.out.println(e.getMessage());
-				if(e.getMessage() == "Wrong Credentials") {
-				response = new ResponseEntity<>(e.getMessage(), HttpStatus.FORBIDDEN);
-				}
-				else {
-					response = new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+				if (e.getMessage() == "Wrong Credentials") {
+//					response = new ResponseEntity<>(e.getMessage(), HttpStatus.FORBIDDEN);
+					response = ResponseEntity.status(HttpStatus.FORBIDDEN)
+							.header("Content-Security-Policy", "default-src 'self'; script-src 'self' https://trustedscripts.example.com; object-src 'none';")
+							.body(e.getMessage());
+				} else {
+//					response = new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+					response = ResponseEntity.status(HttpStatus.BAD_REQUEST)
+							.header("Content-Security-Policy", "default-src 'self'; script-src 'self' https://trustedscripts.example.com; object-src 'none';")
+							.body(e.getMessage());
 				}
 			}
 			return response;
-//	  }else {
-//		  // Extract the specific fields you need from the errorBody if necessary
-//	        Map<String, String> errorResponse = new HashMap<>();
-//	        errorResponse.put("message", "Wrong client ID found ");
-//	          errorResponse.put("statusCode", "400");
-//	          return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
-//
-//	  }
-		
-		
+		} else {
+//			response = new ResponseEntity<>("Too Many Request Per Second", HttpStatus.TOO_MANY_REQUESTS);
+			response = ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS)
+					.header("Content-Security-Policy", "default-src 'self'; script-src 'self' https://trustedscripts.example.com; object-src 'none';")
+					.body("Too Many Requests Per Minute");
+			return response;
+		}
+
 	}
+
 	
 	@CrossOrigin
 	@PostMapping("/logoutpage")
@@ -476,23 +511,23 @@ public class loginController {
 		ResponseEntity<?> response;
 	
 		try {
-			// Decrypt the payload
+		
 			String decryptedPayload = decryptService.decrypt(encryptedText, base64Iv, base64Key);
 			System.out.println("Decrypted Payload from logout: " + decryptedPayload);
 	
-			// Convert the decrypted JSON string to UserModel
+			
 			UserModel user = objectMapper.readValue(decryptedPayload, UserModel.class);
 	
-			// Get the vendor code (employee ID) and log out the user
-			String vendorCode = user.getEmployeeId();  // Assuming vendorCode is the same as employeeId
-			userDetailsService.logout(vendorCode);  // Call the logout method
+			
+			String vendorCode = user.getEmployeeId();  
+			userDetailsService.logout(vendorCode);  
 	
-			// Send response indicating successful logout
+			
 			response = new ResponseEntity<>("User logged out", HttpStatus.OK);
 			System.out.println(response);
 	
 		} catch (Exception e) {
-			// Handle exceptions and return appropriate response
+			
 			e.printStackTrace();
 			response = new ResponseEntity<>("Internal Server Error", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
@@ -503,56 +538,6 @@ public class loginController {
 	
 
 
-//	@CrossOrigin
-//	@PostMapping("/loginpage1")
-//	public ResponseEntity<?> login(@RequestBody Map<String, String> payload) {
-//	    logger.info("Received encrypted request body");
-//
-//	    String encryptedText = payload.get("encryptedText");
-//	    String base64Iv = payload.get("base64iv");
-//	    String base64Key = payload.get("key");
-//	    System.out.println(payload);
-//
-//	    ResponseEntity<?> response;
-//	    try {
-//	        // Decrypt the payload
-//	        String decryptedPayload = decryptService.decrypt(encryptedText, base64Iv, base64Key);
-//	        System.out.println("Decrypted Payload: " + decryptedPayload);
-//
-//	        // Convert the decrypted JSON string to UserModel
-//	        UserModel user = objectMapper.readValue(decryptedPayload, UserModel.class);
-//
-//	        // Process the decrypted user data
-//	        UserDetails loggedInUser = userDetailsService.login(user);
-//	        Integer num = 1 ;
-//	        if (loggedInUser != null) {
-//	            if (loggedInUser.isLoggedIn()) {
-//	                // User is already logged in from another session
-//	                response = new ResponseEntity<>("User is already logged in from another session.", HttpStatus.CONFLICT);
-//	            } else {
-//	                // Update login status to logged in
-//					loggedInUser.setLoggedIn(true);
-//	                
-//	                userDetailsRepo.save(loggedInUser);
-//
-//	                // Create response payload	
-//	                Map<String, String> employee = new HashMap<>();
-//	                employee.put("vendorCode", loggedInUser.getEmployeeId());
-//	                employee.put("name", loggedInUser.getName());
-//
-//	                // Encrypt the response
-//	                String encryptedResponse = encrypt.encrypt(employee, base64Key, base64Iv);
-//	                response = new ResponseEntity<>(encryptedResponse, HttpStatus.OK);
-//	            }
-//	        } else {
-//	            response = new ResponseEntity<>("User does not exist", HttpStatus.NOT_FOUND);
-//	        }
-//	    } catch (Exception e) {
-//	        e.printStackTrace();
-//	        response = new ResponseEntity<>("Internal Server Error", HttpStatus.INTERNAL_SERVER_ERROR);
-//	    }
-//	    return response;
-//	}
 
 	
 
@@ -576,80 +561,10 @@ public class loginController {
 		return response;
 	}
 
-	@PostMapping("/postWithImage")
-	public ResponseEntity<?> postWithImage(@RequestBody UploadImage obj) {
-		// TODO: process POST request
-		ResponseEntity<?> response = null;
-		System.out.println(obj);
-		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(MediaType.APPLICATION_JSON);
-			
-		String apiUrl = "https://dil.sbigen.in/services/PINModule/updateCase";
-		HttpEntity<UploadImage> requestEntity = new HttpEntity<UploadImage>(obj, headers);
-		Class<Map<String, String>> responseType = (Class<Map<String, String>>) (Class<?>) Map.class;
-		ResponseEntity<Map<String, String>> responseEntity = restTemplate.exchange(apiUrl, HttpMethod.POST,
-				requestEntity, responseType);
-		try {
-
-			System.out.println("Response Body : " + responseEntity.getBody());
-			response = new ResponseEntity<Map<String, String>>(responseEntity.getBody(), HttpStatus.OK);
-			logger.info("Response of postWithImage method in PIN details {}", response.getBody());
-
-			if (responseEntity.getStatusCode().toString().contains("400")) {
-				response = new ResponseEntity<Map<String, String>>(responseEntity.getBody(), HttpStatus.OK);
-				logger.info("Response of postWithImage method in PIN details with error 400 due to Cognizant {}",
-						response.getBody());
-
-			}
-
-		} catch (Exception e) {
-			String[] errorLines = e.getMessage().split("<EOL>");
-			for (String line : errorLines) {
-
-				response = new ResponseEntity<>(responseEntity.getBody(), HttpStatus.ALREADY_REPORTED);
-				logger.info("Response of postWithImage method in PIN details {}", e.getMessage());
-
-				// response = new ResponseEntity<Map<String, String>>(errorResponseMap ,
-				// HttpStatus.ALREADY_REPORTED);
-			}
-		}
-		return response;
-	}
-
+		
 	
 	
 	
-	
-	@PostMapping("/extraKmRequested")
-	public ResponseEntity<?> extraKmRequestedMethod(@RequestBody ExtraKmModel entity) {
-		// TODO: process POST request
-		System.out.println(entity);
-		ResponseEntity<?> response = null;
-		String apiUrl = "https://dil.sbigen.in/services/PINModule/ExtraKMRequest";
-		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(MediaType.APPLICATION_JSON);
-
-		HttpEntity<ExtraKmModel> requestEntity = new HttpEntity<ExtraKmModel>(entity, headers);
-
-		Class<Map<String, String>> responseType = (Class<Map<String, String>>) (Class<?>) Map.class;
-
-		try {
-			ResponseEntity<Map<String, String>> responseEntity = restTemplate.exchange(apiUrl, HttpMethod.POST,
-					requestEntity, responseType);
-			if (responseEntity.getStatusCode().toString().contains("400")) {
-				response = new ResponseEntity<Map<String, String>>(responseEntity.getBody(), HttpStatus.OK);
-				logger.info("Response of Extra KM method in PIN details {}", response);
-
-			}
-
-		} catch (Exception e) {
-			response = new ResponseEntity<String>(e.getMessage(), HttpStatus.ALREADY_REPORTED);
-			logger.info("Response of Extra KM method in PIN details {}", response);
-		}
-
-		return response;
-	}
-
 	@GetMapping("/images")
 	public ResponseEntity<Map<String, String>> getImage() {
 
@@ -692,7 +607,7 @@ public class loginController {
 	    HttpHeaders headers = new HttpHeaders();
 	    headers.setContentType(MediaType.APPLICATION_JSON);
 
-	    String apiUrl = "https://dil.sbigen.in/services/PINModule/updateCase";
+	    String apiUrl = "https://uat-dil.sbigen.in/services/PINModule/updateCase";
 	    HttpEntity<UploadImage> requestEntity = new HttpEntity<>(obj, headers);
 
 	    try {
@@ -707,17 +622,18 @@ public class loginController {
 	        String errorBody = e.getResponseBodyAsString();
 	        logger.error("Error response from vendor: {}", errorBody);
 
-	        // Extract the specific fields you need from the errorBody if necessary
+	       
 	        Map<String, String> errorResponse = new HashMap<>();
 	        errorResponse.put("message", "Request Already Submitted");
 	        errorResponse.put("pinNumber", obj.getPinNumber());
 	        errorResponse.put("statusCode", "400");
+	        logger.error(errorResponse);
 
-	        // Return a custom response with the necessary fields
+	      
 	        return new ResponseEntity<>(errorResponse, HttpStatus.ALREADY_REPORTED);
 
 	    } catch (Exception e) {
-	        // Handle any other exceptions and return an internal server error
+	     
 	        logger.error("Internal Server Error: {}", e.getMessage());
 	        Map<String, String> errorResponse = new HashMap<>();
 	        errorResponse.put("message", "Internal Server Error");
@@ -732,7 +648,7 @@ public class loginController {
 	public ResponseEntity<?> extraKmRequestedMethod1(@RequestBody ExtraKmModel entity) {
 		System.out.println(entity);
 		
-	    String apiUrl = "https://dil.sbigen.in/services/PINModule/ExtraKMRequest";
+	    String apiUrl = "https://uat-dil.sbigen.in/services/PINModule/ExtraKMRequest";
 	    HttpHeaders headers = new HttpHeaders();
 	    headers.setContentType(MediaType.APPLICATION_JSON);
 	    HttpEntity<ExtraKmModel> requestEntity = new HttpEntity<>(entity, headers);
@@ -741,25 +657,26 @@ public class loginController {
 	        ResponseEntity<Map<String, String>> responseEntity = restTemplate.exchange(apiUrl, HttpMethod.POST,
 	                requestEntity, new ParameterizedTypeReference<Map<String, String>>() {});
 
-	        // If the response is successful, return it directly
+	  
 	        return new ResponseEntity<>(responseEntity.getBody(), HttpStatus.OK);
 
 	    } catch (HttpClientErrorException e) {
-	        // Parse the error message from the response
+	   
 	        String errorBody = e.getResponseBodyAsString();
 	        logger.error("Error response from vendor: {}", errorBody);
 
-	        // Extract the specific fields you need from the errorBody if necessary
+	        
 	        Map<String, String> errorResponse = new HashMap<>();
 	        errorResponse.put("message", "Request Already Submitted");
 	        errorResponse.put("pinNumber", entity.getPinNumber());
 	        errorResponse.put("statusCode", "400");
+	        logger.info(errorResponse);
 
-	        // Return a custom response with the necessary fields
+	   
 	        return new ResponseEntity<>(errorResponse, HttpStatus.ALREADY_REPORTED);
 
 	    } catch (Exception e) {
-	        // Handle any other exceptions and return an internal server error
+
 	        logger.error("Internal Server Error: {}", e.getMessage());
 	        Map<String, String> errorResponse = new HashMap<>();
 	        errorResponse.put("message", "Internal Server Error");
