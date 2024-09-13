@@ -22,7 +22,7 @@ public class AppConfig {
 		configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
 		
 		  configuration.setAllowedHeaders(Arrays.asList("authorization",
-		  "content-type", "x-auth-token" , "Content-Security-Policy"));
+		  "content-type", "x-auth-token" , "Content-Security-Policy","ClientID"));
 		  configuration.setExposedHeaders(Arrays.asList("x-auth-token"));
 		 
 		configuration.setAllowCredentials(true);

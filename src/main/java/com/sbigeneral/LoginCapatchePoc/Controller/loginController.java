@@ -111,7 +111,7 @@ import sun.net.www.protocol.https.Handler;
 
 @Controller
 @CrossOrigin(origins = { "http://localhost:4200", "https://ansappsuat.sbigen.in", "http://localhost:5173",
-		"http://172.18.115.105:7003/BMS" , "http://172.16.232.92:7002/PIN","https://commonsecure.sbigen.in/VBIM/"})
+		"http://172.18.115.105:7003/BMS", "http://172.16.232.92:7002/PIN", "https://commonsecure.sbigen.in/VBIM/" })
 @PropertySource("classpath:log4j2.properties")
 public class loginController {
 	@Autowired
@@ -133,11 +133,10 @@ public class loginController {
 	private GCMUtilty gcmUtility;
 	@Autowired
 	private ApiService apiService;
-	
+
 	@Autowired
 	Bucket bucket;
-	
-	
+
 	private static RestTemplate restTemplate = new RestTemplate();
 
 	@Autowired
@@ -145,7 +144,7 @@ public class loginController {
 
 	@Autowired
 	VendorLogoutServiceImpl vendorLogoutScheduler;
-	
+
 	private static final Logger logger = LogManager.getLogger(loginController.class);
 
 	@Autowired
@@ -156,11 +155,9 @@ public class loginController {
 	private Encrypt encrypt;
 
 	private String loginPageImage;
-	
+
 	@Autowired
 	private FormValidation validation;
-
-
 
 	@Autowired
 	UserDetailsRepo userDetailsRepo;
@@ -349,7 +346,8 @@ public class loginController {
 		sessionRegistry.getAllSessions(session, false).forEach(SessionInformation::expireNow);
 	}
 
-	/// ***************************************Sameer Code ************************************************************
+	/// ***************************************Sameer Code
+	/// ************************************************************
 	/// ************************************////////////////////////////////////
 
 	@CrossOrigin
@@ -375,7 +373,6 @@ public class loginController {
 		return response;
 	}
 
-	
 //	@CrossOrigin
 //	@PostMapping("/loginpage1")
 //	public ResponseEntity<?> login(@RequestBody Map<String, String> payload , HttpServletRequest request) {
@@ -427,81 +424,87 @@ public class loginController {
 //		
 //		
 //	}
-	
-	
+
 	@CrossOrigin
 	@PostMapping("/loginpage1")
 	public ResponseEntity<?> login(@RequestBody Map<String, String> payload, HttpServletRequest request) {
 		ResponseEntity<?> response;
+		System.out.println("Headers names are : " + request.getHeader("ClientID"));
+		String validHeader = request.getHeader("ClientID");
+		if (validHeader.equals("abKJFeuwfdzcxnbzkjXnxcbowdhoihkjsaaiuEQWYUBNZCBXXCZIQ8EUSCKVDBNMXBZBXNCB")) {
 		if (bucket.tryConsume(1)) {
-			System.out.println("Headers names are : " + request.getHeader("ClientID"));
-			String validHeader = request.getHeader("ClientID");
+			
 
-//	  if(validHeader.equals("abKJFeuwfdzcxnbzkjXnxcbowdhoihkjsaaiuEQWYUBNZCBXXCZIQ8EUSCKVDBNMXBZBXNCB")) {
-			System.out.println("Correct Header");
+			
+				System.out.println("Correct Header");
 
-			logger.info("Received encrypted request body");
+				logger.info("Received encrypted request body");
 
-			String encryptedText = payload.get("encryptedText");
-			String base64Iv = payload.get("base64iv");
-			String base64Key = payload.get("key");
+				String encryptedText = payload.get("encryptedText");
+				String base64Iv = payload.get("base64iv");
+				String base64Key = payload.get("key");
 
 //			ResponseEntity<?> response;
-			try {
+				try {
 
-				String decryptedPayload = decryptService.decrypt(encryptedText, base64Iv, base64Key);
-				System.out.println("Decrypted Payload: " + decryptedPayload);
+					String decryptedPayload = decryptService.decrypt(encryptedText, base64Iv, base64Key);
+					System.out.println("Decrypted Payload: " + decryptedPayload);
 
-				UserModel user = objectMapper.readValue(decryptedPayload, UserModel.class);
+					UserModel user = objectMapper.readValue(decryptedPayload, UserModel.class);
 
-				UserDetails loggedInUser = userDetailsService.login(user);
-				if (loggedInUser != null) {
-					Map<String, String> employee = new HashMap<>();
-					employee.put("vendorCode", loggedInUser.getEmployeeId());
-					employee.put("name", loggedInUser.getName());
-					vendorLogoutScheduler.scheduleLogout(loggedInUser.getEmployeeId());
+					UserDetails loggedInUser = userDetailsService.login(user);
+					if (loggedInUser != null) {
+						Map<String, String> employee = new HashMap<>();
+						employee.put("vendorCode", loggedInUser.getEmployeeId());
+						employee.put("name", loggedInUser.getName());
+						vendorLogoutScheduler.scheduleLogout(loggedInUser.getEmployeeId());
 
-					String encryptedResponse = encrypt.encrypt(employee, base64Key, base64Iv);
-					
+						String encryptedResponse = encrypt.encrypt(employee, base64Key, base64Iv);
+
 //					response = new ResponseEntity<>(encryptedResponse, HttpStatus.OK );
-					response = ResponseEntity.ok()
-	                        .header("Content-Security-Policy", "default-src 'self'; script-src 'self' https://trustedscripts.example.com; object-src 'none';")
-	                        .body(encryptedResponse);
-					
-					
-				} else {
+						response = ResponseEntity.ok().header("Content-Security-Policy",
+								"default-src 'self'; script-src 'self' https://trustedscripts.example.com; object-src 'none';")
+								.body(encryptedResponse);
+
+					} else {
 //					response = new ResponseEntity<>("User does not exist", HttpStatus.NOT_FOUND);
-					response = ResponseEntity.status(HttpStatus.NOT_FOUND)
-							.header("Content-Security-Policy", "default-src 'self'; script-src 'self' https://trustedscripts.example.com; object-src 'none';")
-							.body("User Does Not Exist");
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-				System.out.println(e.getMessage());
-				if (e.getMessage() == "Wrong Credentials") {
+						response = ResponseEntity.status(HttpStatus.NOT_FOUND).header("Content-Security-Policy",
+								"default-src 'self'; script-src 'self' https://trustedscripts.example.com; object-src 'none';")
+								.body("User Does Not Exist");
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+					System.out.println(e.getMessage());
+					if (e.getMessage() == "Wrong Credentials") {
 //					response = new ResponseEntity<>(e.getMessage(), HttpStatus.FORBIDDEN);
-					response = ResponseEntity.status(HttpStatus.FORBIDDEN)
-							.header("Content-Security-Policy", "default-src 'self'; script-src 'self' https://trustedscripts.example.com; object-src 'none';")
-							.body(e.getMessage());
-				} else {
+						response = ResponseEntity.status(HttpStatus.FORBIDDEN).header("Content-Security-Policy",
+								"default-src 'self'; script-src 'self' https://trustedscripts.example.com; object-src 'none';")
+								.body(e.getMessage());
+					} else {
 //					response = new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-					response = ResponseEntity.status(HttpStatus.BAD_REQUEST)
-							.header("Content-Security-Policy", "default-src 'self'; script-src 'self' https://trustedscripts.example.com; object-src 'none';")
-							.body(e.getMessage());
+						response = ResponseEntity.status(HttpStatus.BAD_REQUEST).header("Content-Security-Policy",
+								"default-src 'self'; script-src 'self' https://trustedscripts.example.com; object-src 'none';")
+								.body(e.getMessage());
+					}
 				}
-			}
-			return response;
-		} else {
+				return response;
+			} else {
 //			response = new ResponseEntity<>("Too Many Request Per Second", HttpStatus.TOO_MANY_REQUESTS);
-			response = ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS)
-					.header("Content-Security-Policy", "default-src 'self'; script-src 'self' https://trustedscripts.example.com; object-src 'none';")
-					.body("Too Many Requests Per Minute");
-			return response;
+				response = ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS).header("Content-Security-Policy",
+						"default-src 'self'; script-src 'self' https://trustedscripts.example.com; object-src 'none';")
+						.body("Too Many Requests Per Minute");
+				return response;
+			}
+		} else {
+			// Extract the specific fields you need from the errorBody if necessary
+			Map<String, String> errorResponse = new HashMap<>();
+			errorResponse.put("message", "Wrong client ID found ");
+			errorResponse.put("statusCode", "400");
+			return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
 		}
 
 	}
 
-	
 	@CrossOrigin
 	@PostMapping("/logoutpage")
 	public ResponseEntity<?> logoutPage(@RequestBody Map<String, String> payload) {
@@ -509,37 +512,29 @@ public class loginController {
 		String base64Iv = payload.get("base64iv");
 		String base64Key = payload.get("key");
 		ResponseEntity<?> response;
-	
+
 		try {
-		
+
 			String decryptedPayload = decryptService.decrypt(encryptedText, base64Iv, base64Key);
 			System.out.println("Decrypted Payload from logout: " + decryptedPayload);
-	
-			
+
 			UserModel user = objectMapper.readValue(decryptedPayload, UserModel.class);
-	
-			
-			String vendorCode = user.getEmployeeId();  
-			userDetailsService.logout(vendorCode);  
-	
-			
+
+			String vendorCode = user.getEmployeeId();
+			userDetailsService.logout(vendorCode);
+
 			response = new ResponseEntity<>("User logged out", HttpStatus.OK);
 			System.out.println(response);
-	
+
 		} catch (Exception e) {
-			
+
 			e.printStackTrace();
 			response = new ResponseEntity<>("Internal Server Error", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		System.out.println("Before sending logut response " + response);
-	
+
 		return response;
 	}
-	
-
-
-
-	
 
 	@CrossOrigin
 	@PostMapping("/getReport")
@@ -561,10 +556,6 @@ public class loginController {
 		return response;
 	}
 
-		
-	
-	
-	
 	@GetMapping("/images")
 	public ResponseEntity<Map<String, String>> getImage() {
 
@@ -581,112 +572,106 @@ public class loginController {
 		return ResponseEntity.ok(imageMap);
 
 	}
-	
-	
+
 	@PostMapping("/postWithImage1")
 	public ResponseEntity<?> postWithImage1(@RequestBody UploadImage obj) {
 		System.out.println(obj);
-	    ResponseEntity<?> response;
-	    System.out.println(obj.getRemarks());
-	    boolean valid = validation.checkSpecialChars(obj.getRemarks());
-	    
-	    if(valid == false) {
-	    	logger.error("Special characters found in request");
+		ResponseEntity<?> response;
+		System.out.println(obj.getRemarks());
+		boolean valid = validation.checkSpecialChars(obj.getRemarks());
 
-	        // Extract the specific fields you need from the errorBody if necessary
-	        Map<String, String> errorResponse = new HashMap<>();
-	        errorResponse.put("message", "Special Characters found in remarks field");
-	        errorResponse.put("pinNumber", obj.getPinNumber());
-	        errorResponse.put("statusCode", "406");
+		if (valid == false) {
+			logger.error("Special characters found in request");
 
-	        // Return a custom response with the necessary fields
-	        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_ACCEPTABLE);
-	    	
-	    }
-	    
-	    HttpHeaders headers = new HttpHeaders();
-	    headers.setContentType(MediaType.APPLICATION_JSON);
+			// Extract the specific fields you need from the errorBody if necessary
+			Map<String, String> errorResponse = new HashMap<>();
+			errorResponse.put("message", "Special Characters found in remarks field");
+			errorResponse.put("pinNumber", obj.getPinNumber());
+			errorResponse.put("statusCode", "406");
 
-	    String apiUrl = "https://uat-dil.sbigen.in/services/PINModule/updateCase";
-	    HttpEntity<UploadImage> requestEntity = new HttpEntity<>(obj, headers);
+			// Return a custom response with the necessary fields
+			return new ResponseEntity<>(errorResponse, HttpStatus.NOT_ACCEPTABLE);
 
-	    try {
-	        ResponseEntity<Map<String, String>> responseEntity = restTemplate.exchange(apiUrl, HttpMethod.POST,
-	                requestEntity, new ParameterizedTypeReference<Map<String, String>>() {});
+		}
 
-	        // If the response is successful, return it directly
-	        return new ResponseEntity<>(responseEntity.getBody(), HttpStatus.OK);
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
 
-	    } catch (HttpClientErrorException e) {
-	        // Parse the error message from the response
-	        String errorBody = e.getResponseBodyAsString();
-	        logger.error("Error response from vendor: {}", errorBody);
+		String apiUrl = "https://uat-dil.sbigen.in/services/PINModule/updateCase";
+		HttpEntity<UploadImage> requestEntity = new HttpEntity<>(obj, headers);
 
-	       
-	        Map<String, String> errorResponse = new HashMap<>();
-	        errorResponse.put("message", "Request Already Submitted");
-	        errorResponse.put("pinNumber", obj.getPinNumber());
-	        errorResponse.put("statusCode", "400");
-	        logger.error(errorResponse);
+		try {
+			ResponseEntity<Map<String, String>> responseEntity = restTemplate.exchange(apiUrl, HttpMethod.POST,
+					requestEntity, new ParameterizedTypeReference<Map<String, String>>() {
+					});
 
-	      
-	        return new ResponseEntity<>(errorResponse, HttpStatus.ALREADY_REPORTED);
+			// If the response is successful, return it directly
+			return new ResponseEntity<>(responseEntity.getBody(), HttpStatus.OK);
 
-	    } catch (Exception e) {
-	     
-	        logger.error("Internal Server Error: {}", e.getMessage());
-	        Map<String, String> errorResponse = new HashMap<>();
-	        errorResponse.put("message", "Internal Server Error");
-	        errorResponse.put("pinNumber", obj.getPinNumber());
-	        errorResponse.put("statusCode", "500");
+		} catch (HttpClientErrorException e) {
+			// Parse the error message from the response
+			String errorBody = e.getResponseBodyAsString();
+			logger.error("Error response from vendor: {}", errorBody);
 
-	        return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
-	    }
+			Map<String, String> errorResponse = new HashMap<>();
+			errorResponse.put("message", "Request Already Submitted");
+			errorResponse.put("pinNumber", obj.getPinNumber());
+			errorResponse.put("statusCode", "400");
+			logger.error(errorResponse);
+
+			return new ResponseEntity<>(errorResponse, HttpStatus.ALREADY_REPORTED);
+
+		} catch (Exception e) {
+
+			logger.error("Internal Server Error: {}", e.getMessage());
+			Map<String, String> errorResponse = new HashMap<>();
+			errorResponse.put("message", "Internal Server Error");
+			errorResponse.put("pinNumber", obj.getPinNumber());
+			errorResponse.put("statusCode", "500");
+
+			return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 
 	@PostMapping("/extraKmRequested1")
 	public ResponseEntity<?> extraKmRequestedMethod1(@RequestBody ExtraKmModel entity) {
 		System.out.println(entity);
-		
-	    String apiUrl = "https://uat-dil.sbigen.in/services/PINModule/ExtraKMRequest";
-	    HttpHeaders headers = new HttpHeaders();
-	    headers.setContentType(MediaType.APPLICATION_JSON);
-	    HttpEntity<ExtraKmModel> requestEntity = new HttpEntity<>(entity, headers);
 
-	    try {
-	        ResponseEntity<Map<String, String>> responseEntity = restTemplate.exchange(apiUrl, HttpMethod.POST,
-	                requestEntity, new ParameterizedTypeReference<Map<String, String>>() {});
+		String apiUrl = "https://uat-dil.sbigen.in/services/PINModule/ExtraKMRequest";
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		HttpEntity<ExtraKmModel> requestEntity = new HttpEntity<>(entity, headers);
 
-	  
-	        return new ResponseEntity<>(responseEntity.getBody(), HttpStatus.OK);
+		try {
+			ResponseEntity<Map<String, String>> responseEntity = restTemplate.exchange(apiUrl, HttpMethod.POST,
+					requestEntity, new ParameterizedTypeReference<Map<String, String>>() {
+					});
 
-	    } catch (HttpClientErrorException e) {
-	   
-	        String errorBody = e.getResponseBodyAsString();
-	        logger.error("Error response from vendor: {}", errorBody);
+			return new ResponseEntity<>(responseEntity.getBody(), HttpStatus.OK);
 
-	        
-	        Map<String, String> errorResponse = new HashMap<>();
-	        errorResponse.put("message", "Request Already Submitted");
-	        errorResponse.put("pinNumber", entity.getPinNumber());
-	        errorResponse.put("statusCode", "400");
-	        logger.info(errorResponse);
+		} catch (HttpClientErrorException e) {
 
-	   
-	        return new ResponseEntity<>(errorResponse, HttpStatus.ALREADY_REPORTED);
+			String errorBody = e.getResponseBodyAsString();
+			logger.error("Error response from vendor: {}", errorBody);
 
-	    } catch (Exception e) {
+			Map<String, String> errorResponse = new HashMap<>();
+			errorResponse.put("message", "Request Already Submitted");
+			errorResponse.put("pinNumber", entity.getPinNumber());
+			errorResponse.put("statusCode", "400");
+			logger.info(errorResponse);
 
-	        logger.error("Internal Server Error: {}", e.getMessage());
-	        Map<String, String> errorResponse = new HashMap<>();
-	        errorResponse.put("message", "Internal Server Error");
-	        errorResponse.put("pinNumber", entity.getPinNumber());
-	        errorResponse.put("statusCode", "500");
+			return new ResponseEntity<>(errorResponse, HttpStatus.ALREADY_REPORTED);
 
-	        return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
-	    }
+		} catch (Exception e) {
+
+			logger.error("Internal Server Error: {}", e.getMessage());
+			Map<String, String> errorResponse = new HashMap<>();
+			errorResponse.put("message", "Internal Server Error");
+			errorResponse.put("pinNumber", entity.getPinNumber());
+			errorResponse.put("statusCode", "500");
+
+			return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
-
-	
 
 }
