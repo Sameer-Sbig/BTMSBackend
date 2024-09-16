@@ -129,11 +129,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	
 	
-	
+//	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.logout().logoutUrl("/logout").logoutSuccessUrl("/login?logout").invalidateHttpSession(true).deleteCookies("JSESSIONID").and().cors().and()
-				.headers().frameOptions().sameOrigin().and().csrf().disable().authorizeRequests().and().formLogin()
+		http.logout().logoutUrl("/logout").logoutSuccessUrl("/login?logout").invalidateHttpSession(true).deleteCookies("JSESSIONID").and().cors()
+				.and()
+				.headers()
+				.frameOptions()
+				.disable()
+//				.defaultsDisabled()
+//				.frameOptions().sameOrigin()
+				.and()
+				.csrf().disable().authorizeRequests().and().formLogin()
 				.loginPage("/login").failureHandler(failureHandler).successHandler(successHandler).permitAll().and()
 				.authorizeRequests().antMatchers("/forgetpassword/**").permitAll().and().sessionManagement()
 				.maximumSessions(1).maxSessionsPreventsLogin(true).sessionRegistry(sessionRegistry()).and()
