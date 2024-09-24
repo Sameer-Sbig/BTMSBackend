@@ -1,7 +1,7 @@
 package com.sbigeneral.BTMS.Controller;
 
 import java.io.BufferedReader;
-import com.sbigeneral.BTMS.Repository.PolicyDetailsRepository;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 
@@ -85,8 +85,10 @@ import org.springframework.web.client.RestTemplate;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itextpdf.text.log.SysoLogger;
 import com.sbigeneral.BTMS.Entity.AgreementCodeEntity;
+import com.sbigeneral.BTMS.Entity.CustomMisReport;
 import com.sbigeneral.BTMS.Entity.CustomeIdGenerator;
 import com.sbigeneral.BTMS.Entity.MisReport;
+import com.sbigeneral.BTMS.Entity.OemReport;
 import com.sbigeneral.BTMS.Entity.PinDetails;
 import com.sbigeneral.BTMS.Entity.ResponseMessage;
 import com.sbigeneral.BTMS.Entity.SearchbyPinDetails;
@@ -99,7 +101,7 @@ import com.sbigeneral.BTMS.Service.Decrypt;
 import com.sbigeneral.BTMS.Service.Encrypt;
 import com.sbigeneral.BTMS.Service.UserDetailsService;
 import com.sbigeneral.BTMS.Service.UserService;
-import com.sbigeneral.BTMS.ServiceImpl.MisReportService;
+
 import com.sbigeneral.BTMS.ServiceImpl.VendorLogoutServiceImpl;
 import com.sbigeneral.BTMS.Utill.CaptchaUtils;
 import com.sbigeneral.BTMS.Utill.EmailSender;
@@ -131,7 +133,7 @@ public class loginController {
 	@Autowired
 	@Lazy
 	private PasswordEncoder encoder;
-	@Autowired
+	@Autowired	
 	private HttpSession httpSession;
 	@Autowired
 	private SessionRegistry sessionRegistry;
@@ -173,8 +175,7 @@ public class loginController {
 	@Autowired
 	UserDetailsRepo userDetailsRepo;
 	
-	@Autowired
-	MisReportService misReportService;
+
 	
 	
 	@Autowired
@@ -497,7 +498,22 @@ public class loginController {
 	    }
 	    return reportList;
 	}
+	
+	
+	@PostMapping("/getFilteredData")
+	public List<MisReport> getFilteredPolicyDetails(@RequestBody CustomMisReport object){
+		System.out.println(object);
+		
+		return apiService.getCustomReport(object);
+	}
 
+	@PostMapping("/getOemReport")
+	public List<OemReport> getOemReport(){
+		
+		return apiService.getOemReport();
+		
+		
+	}
 	
 
 }

@@ -1,0 +1,59 @@
+{
+	"info": {
+		"_postman_id": "ced03af5-11ee-4d4e-abbb-ee5bde838d12",
+		"name": "BTMSAPI",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "36989078"
+	},
+	"item": [
+		{
+			"name": "GetMisReport",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:7002/BTMSBackend/getMisReport",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "7002",
+					"path": [
+						"BTMSBackend",
+						"getMisReport"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getFilteredData",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"startDate\": \"01-09-2024\",\r\n    \"endDate\": \"23-09-2024\",\r\n    \"oemName\": null\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:7002/BTMSBackend/getFilteredData",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "7002",
+					"path": [
+						"BTMSBackend",
+						"getFilteredData"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
