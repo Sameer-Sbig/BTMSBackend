@@ -12,12 +12,15 @@
 				"method": "POST",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:7002/BTMSBackend/getMisReport",
+					"raw": "http://172.18.115.105:7003/BTMSBackend/getMisReport",
 					"protocol": "http",
 					"host": [
-						"localhost"
+						"172",
+						"18",
+						"115",
+						"105"
 					],
-					"port": "7002",
+					"port": "7003",
 					"path": [
 						"BTMSBackend",
 						"getMisReport"
@@ -50,6 +53,35 @@
 					"path": [
 						"BTMSBackend",
 						"getFilteredData"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getFailedCases",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"date\":\"13-sep-2024\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:7002/BTMSBackend/getFailedCases",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "7002",
+					"path": [
+						"BTMSBackend",
+						"getFailedCases"
 					]
 				}
 			},

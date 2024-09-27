@@ -29,7 +29,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.sbigeneral.BTMS.Controller.loginController;
+import com.sbigeneral.BTMS.Entity.CustomDate;
 import com.sbigeneral.BTMS.Entity.CustomMisReport;
+import com.sbigeneral.BTMS.Entity.FailedCases;
 import com.sbigeneral.BTMS.Entity.MisReport;
 import com.sbigeneral.BTMS.Entity.OemReport;
 import com.sbigeneral.BTMS.Entity.PinDetails;
@@ -209,16 +211,65 @@ public class ApiServiceImpl implements ApiService {
 	                report.setFail(rs.getString("Fail"));
 	                reports.add(report);
 	            }
-	        } catch (Exception e) {
+	        } catch (Exception e) {	
 	            e.printStackTrace();
 	        }
 
 	        return reports;
 	}
 
-	
-    
+	@Override
+	public List<FailedCases> getFailedCases(CustomDate object) {
+		// TODO Auto-generated method stub
+		 String sql = "select OT.POLICY_NO, CMD.BANCS_POLICYID, AT.POLICY_HOLDER, AT.POLICY_HOLDER_NAME, OT.REGISTRATIONNO, " +
+                 "AT.SUB_CHANNEL_NAME, AT.DEALER_CODE, AT.SUB_CHANNEL2, AT.AGREEMENT_CODE, AT.COL_TYPE, AT.OEM_PREMIUM_AMOUNT, " +
+                 "CMD.SOA_STATUS, CMD.ERROR from SOA_OEM.OEM_TATAPV OT " +
+                 "join SOA_OEM.OEM_SOA_RECORD_CMD CMD on OT.POLICY_NO = CMD.OEM_POLICY_NUMBER " +
+                 "join SOA_OEM.OEM_CMD_ALL_TABLE AT on AT.OEM_POLICY_NUMBER = CMD.OEM_POLICY_NUMBER " +
+                 "where CMD.SOA_STATUS in ('COLLECTION_STAGE_COMPLETED', 'PROPOSAL_STAGE_COMPLETED', 'Insert to common DB', " +
+                 "'PARTY_STAGE_COMPLETED', 'ISSUEQUOTE_STAGE_COMPLETED', 'PARTY_STAGE_FAILED', 'PROPOSAL_STAGE_FAILED') " +
+                 "and to_char(CMD.CREATION_TIME, 'dd-mon-yyyy') between ? and ?";
+//		if(object.getDate() != null && !object.getDate().isEmpty()) {
+//		
+//		}
+		List<FailedCases> results = new ArrayList<>();
+		 try (Connection conn = dataSource.getConnection();
+		         PreparedStatement ps = conn.prepareStatement(sql)){
+			 ps.setString(1, object.getDate());
+			 ps.setString(2, object.getDate());
+			 System.out.println(ps);
+			 try(ResultSet rs = ps.executeQuery()){
+				 while(rs.next()) {
+				 FailedCases report = new FailedCases();
+				 report.setPOLICY_NO(rs.getString("POLICY_NO"));
+	                report.setBANCS_POLICYID(rs.getString("BANCS_POLICYID"));
+	                report.setPOLICY_HOLDER(rs.getString("POLICY_HOLDER"));
+	                report.setPOLICY_HOLDER_NAME(rs.getString("POLICY_HOLDER_NAME"));
+	                report.setREGISTRATIONNO(rs.getString("REGISTRATIONNO"));
+	                report.setSUB_CHANNEL_NAME(rs.getString("SUB_CHANNEL_NAME"));
+	                report.setDEALER_CODE(rs.getString("DEALER_CODE"));
+	                report.setSUB_CHANNEL2(rs.getString("SUB_CHANNEL2"));
+	                report.setAGREEMENT_CODE(rs.getString("AGREEMENT_CODE"));
+	                report.setCOL_TYPE(rs.getString("COL_TYPE"));
+	                report.setOEM_PREMIUM_AMOUNT(rs.getString("OEM_PREMIUM_AMOUNT"));
+	                report.setSOA_STATUS(rs.getString("SOA_STATUS"));
+	                report.setERROR(rs.getString("ERROR"));
+	                results.add(report);}
+				 
+			 }
+			 
+		 }
+		 catch (Exception e) {
+		        e.printStackTrace();
+		    }
+		
+		return results;
+		
+		
 	}
+
+	  
+}
 	
 
 

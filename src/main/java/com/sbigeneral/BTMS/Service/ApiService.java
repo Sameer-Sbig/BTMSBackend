@@ -6,7 +6,9 @@ import java.util.Map;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.sbigeneral.BTMS.Entity.CustomDate;
 import com.sbigeneral.BTMS.Entity.CustomMisReport;
+import com.sbigeneral.BTMS.Entity.FailedCases;
 import com.sbigeneral.BTMS.Entity.MisReport;
 import com.sbigeneral.BTMS.Entity.OemReport;
 import com.sbigeneral.BTMS.Entity.PinDetails;
@@ -21,4 +23,6 @@ public interface ApiService {
     public List<MisReport> getCustomReport(CustomMisReport object);
     
     public List<OemReport> getOemReport();
+    
+    public List<FailedCases> getFailedCases(CustomDate object);
 }

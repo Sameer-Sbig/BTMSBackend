@@ -85,8 +85,10 @@ import org.springframework.web.client.RestTemplate;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itextpdf.text.log.SysoLogger;
 import com.sbigeneral.BTMS.Entity.AgreementCodeEntity;
+import com.sbigeneral.BTMS.Entity.CustomDate;
 import com.sbigeneral.BTMS.Entity.CustomMisReport;
 import com.sbigeneral.BTMS.Entity.CustomeIdGenerator;
+import com.sbigeneral.BTMS.Entity.FailedCases;
 import com.sbigeneral.BTMS.Entity.MisReport;
 import com.sbigeneral.BTMS.Entity.OemReport;
 import com.sbigeneral.BTMS.Entity.PinDetails;
@@ -514,6 +516,15 @@ public class loginController {
 		
 		
 	}
+	
+	
+	@PostMapping("/getFailedCases")
+	public List<FailedCases> getFailedCases(@RequestBody CustomDate object){
+		return apiService.getFailedCases(object);
+		
+		
+	}
+	
 	
 
 }
