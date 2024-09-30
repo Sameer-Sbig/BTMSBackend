@@ -12,6 +12,7 @@ import com.sbigeneral.BTMS.Entity.FailedCases;
 import com.sbigeneral.BTMS.Entity.MisReport;
 import com.sbigeneral.BTMS.Entity.OemReport;
 import com.sbigeneral.BTMS.Entity.PinDetails;
+import com.sbigeneral.BTMS.Entity.SuccessCases;
 
 @Service
 public interface ApiService {
@@ -25,4 +26,10 @@ public interface ApiService {
     public List<OemReport> getOemReport();
     
     public List<FailedCases> getFailedCases(CustomDate object);
+    
+    public List<SuccessCases> getSuccessCases(CustomDate object);
+    
+    public List<FailedCases> getAllCases(CustomDate object);
+    
+    
 }

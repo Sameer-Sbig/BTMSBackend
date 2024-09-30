@@ -3,6 +3,7 @@ com\sbigeneral\BTMS\Utill\GCMUtilty.class
 com\sbigeneral\BTMS\Entity\Report.class
 com\sbigeneral\BTMS\Controller\RenewalMisReportController.class
 com\sbigeneral\BTMS\ServiceImpl\EncryptImpl.class
+com\sbigeneral\BTMS\Entity\CustomDate.class
 com\sbigeneral\BTMS\Service\UserDetailsService.class
 com\sbigeneral\BTMS\Exception\GlobalExceptionHandler.class
 com\sbigeneral\BTMS\Service\Encrypt.class
@@ -48,6 +49,7 @@ com\sbigeneral\BTMS\ServiceImpl\RenewalRmsReportServiceImpl.class
 com\sbigeneral\BTMS\model\RenewalRmsModel.class
 com\sbigeneral\BTMS\ServiceImpl\UserDetailsServiceImpl.class
 com\sbigeneral\BTMS\Utill\UserSessionService$SessionInfo.class
+com\sbigeneral\BTMS\Entity\OemReport.class
 com\sbigeneral\BTMS\Utill\AppConfig.class
 com\sbigeneral\BTMS\Utill\ZipUtil.class
 com\sbigeneral\BTMS\Entity\AgreementCodeEntity.class
@@ -59,11 +61,13 @@ com\sbigeneral\BTMS\Utill\LoginAttemptService$LoginAttempt.class
 com\sbigeneral\BTMS\Controller\loginController.class
 com\sbigeneral\BTMS\model\DocSearchResponse$Response.class
 com\sbigeneral\BTMS\Utill\Commons.class
+com\sbigeneral\BTMS\Entity\FailedCases.class
 com\sbigeneral\BTMS\Entity\User.class
 com\sbigeneral\BTMS\model\BussinessSummarryReport.class
 com\sbigeneral\BTMS\model\DocSearchResponse.class
 com\sbigeneral\BTMS\Repository\UserRepository.class
 com\sbigeneral\BTMS\Utill\FilterConfig.class
+com\sbigeneral\BTMS\Entity\SuccessCases.class
 com\sbigeneral\BTMS\Service\UserService.class
 com\sbigeneral\BTMS\Utill\FormValidation.class
 com\sbigeneral\BTMS\Entity\UserDetails.class

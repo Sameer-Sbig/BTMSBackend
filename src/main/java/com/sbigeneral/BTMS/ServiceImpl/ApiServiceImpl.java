@@ -35,6 +35,7 @@ import com.sbigeneral.BTMS.Entity.FailedCases;
 import com.sbigeneral.BTMS.Entity.MisReport;
 import com.sbigeneral.BTMS.Entity.OemReport;
 import com.sbigeneral.BTMS.Entity.PinDetails;
+import com.sbigeneral.BTMS.Entity.SuccessCases;
 import com.sbigeneral.BTMS.Service.ApiService;
 
 @Service
@@ -188,17 +189,26 @@ public class ApiServiceImpl implements ApiService {
 		
 		 List<OemReport> reports = new ArrayList<>();
 
-	        String query = "SELECT to_char(CMD.CREATION_TIME,'dd-mon-yyyy') as Created_on, " +
-	                       "Count(AT.SOA_TRANSACTIONID) as Total_Policy, " +
-	                       "COUNT(CASE WHEN CMD.SOA_STATUS = 'ISSUEPOLICY_STAGE_COMPLETED' THEN 1 END) as success, " +
-	                       "COUNT(CASE WHEN CMD.SOA_STATUS IN ('COLLECTION_STAGE_COMPLETED', 'PROPOSAL_STAGE_COMPLETED', 'Insert to common DB', " +
-	                       "'PARTY_STAGE_COMPLETED', 'ISSUEQUOTE_STAGE_COMPLETED', 'PARTY_STAGE_FAILED', 'PROPOSAL_STAGE_FAILED', null) THEN 1 END) as Fail " +
-	                       "FROM SOA_OEM.OEM_TATAPV OT " +
-	                       "JOIN SOA_OEM.OEM_SOA_RECORD_CMD CMD ON OT.POLICY_NO = CMD.OEM_POLICY_NUMBER " +
-	                       "JOIN SOA_OEM.OEM_CMD_ALL_TABLE AT ON AT.OEM_POLICY_NUMBER = CMD.OEM_POLICY_NUMBER " +
-	                       "WHERE to_char(CMD.CREATION_TIME, 'dd-mon-yyyy') BETWEEN '01-09-2024' AND '30-09-2024' " +
-	                       "GROUP BY CMD.CREATION_TIME";
 
+
+	     String query = "SELECT "
+	                + "to_char(CMD.CREATION_TIME, 'dd-mon-yyyy') as Created_on, "
+	                + "Count(AT.SOA_TRANSACTIONID) as Total_Policy, "
+	                + "COUNT(CASE WHEN CMD.SOA_STATUS = 'ISSUEPOLICY_STAGE_COMPLETED' THEN 1 END) as success, "
+	                + "SUM(CASE WHEN CMD.SOA_STATUS IN ("
+	                + "'COLLECTION_STAGE_COMPLETED', "
+	                + "'PROPOSAL_STAGE_COMPLETED', "
+	                + "'Insert to common DB', "
+	                + "'PARTY_STAGE_COMPLETED', "
+	                + "'ISSUEQUOTE_STAGE_COMPLETED', "
+	                + "'PARTY_STAGE_FAILED', "
+	                + "'PROPOSAL_STAGE_FAILED', "
+	                + "null) THEN 1 END) as Fail "
+	                + "FROM SOA_OEM.OEM_TATAPV OT "
+	                + "JOIN SOA_OEM.OEM_SOA_RECORD_CMD CMD ON OT.POLICY_NO = CMD.OEM_POLICY_NUMBER "
+	                + "JOIN SOA_OEM.OEM_CMD_ALL_TABLE AT ON AT.OEM_POLICY_NUMBER = CMD.OEM_POLICY_NUMBER "
+	                + "WHERE to_char(CMD.CREATION_TIME, 'dd-mon-yyyy') BETWEEN '01-09-2024' AND '30-09-2024' "
+	                + "GROUP BY to_char(CMD.CREATION_TIME, 'dd-mon-yyyy')";
 	        try (Connection conn = dataSource.getConnection();
 	             PreparedStatement stmt = conn.prepareStatement(query);
 	             ResultSet rs = stmt.executeQuery()) {
@@ -266,6 +276,115 @@ public class ApiServiceImpl implements ApiService {
 		return results;
 		
 		
+	}
+
+	@Override
+	public List<SuccessCases> getSuccessCases(CustomDate object) {
+		// TODO Auto-generated method stub
+		List<SuccessCases> results = new ArrayList<>();
+		String sql = "SELECT OT.POLICY_NO, CMD.BANCS_POLICYID, AT.POLICY_HOLDER, AT.POLICY_HOLDER_NAME, " +
+	             "OT.REGISTRATIONNO, AT.SUB_CHANNEL_NAME, AT.DEALER_CODE, AT.SUB_CHANNEL2, " +
+	             "AT.AGREEMENT_CODE, AT.COL_TYPE, AT.OEM_PREMIUM_AMOUNT, CMD.SOA_STATUS " +
+	             "FROM SOA_OEM.OEM_TATAPV OT " +
+	             "JOIN SOA_OEM.OEM_SOA_RECORD_CMD CMD ON OT.POLICY_NO = CMD.OEM_POLICY_NUMBER " +
+	             "JOIN SOA_OEM.OEM_CMD_ALL_TABLE AT ON AT.OEM_POLICY_NUMBER = CMD.OEM_POLICY_NUMBER " +
+	             "WHERE CMD.SOA_STATUS IN ('COLLECTION_STAGE_COMPLETED', 'PROPOSAL_STAGE_COMPLETED', " +
+	             "'Insert to common DB', 'PARTY_STAGE_SUCCESS', 'ISSUEQUOTE_STAGE_SUCCESS') " +
+	             "AND TO_CHAR(CMD.CREATION_TIME, 'dd-mon-yyyy') BETWEEN ? AND ?";
+		 try (Connection conn = dataSource.getConnection();
+		         PreparedStatement ps = conn.prepareStatement(sql)){
+			 ps.setString(1, object.getDate());
+			 ps.setString(2, object.getDate());
+			 System.out.println(ps);
+			 try(ResultSet rs = ps.executeQuery()){
+				 while(rs.next()) {
+				 SuccessCases report = new SuccessCases();
+				 report.setPOLICY_NO(rs.getString("POLICY_NO"));
+	                report.setBANCS_POLICYID(rs.getString("BANCS_POLICYID"));
+	                report.setPOLICY_HOLDER(rs.getString("POLICY_HOLDER"));
+	                report.setPOLICY_HOLDER_NAME(rs.getString("POLICY_HOLDER_NAME"));
+	                report.setREGISTRATIONNO(rs.getString("REGISTRATIONNO"));
+	                report.setSUB_CHANNEL_NAME(rs.getString("SUB_CHANNEL_NAME"));
+	                report.setDEALER_CODE(rs.getString("DEALER_CODE"));
+	                report.setSUB_CHANNEL2(rs.getString("SUB_CHANNEL2"));
+	                report.setAGREEMENT_CODE(rs.getString("AGREEMENT_CODE"));
+	                report.setCOL_TYPE(rs.getString("COL_TYPE"));
+	                report.setOEM_PREMIUM_AMOUNT(rs.getString("OEM_PREMIUM_AMOUNT"));
+	                report.setSOA_STATUS(rs.getString("SOA_STATUS"));
+	                
+	                results.add(report);}
+				 
+			 }
+			 
+		 }
+		 catch (Exception e) {
+		        e.printStackTrace();
+		    }
+		
+		return results;
+
+	}
+
+	@Override
+	public List<FailedCases> getAllCases(CustomDate object) {
+		String sql = "SELECT " +
+			    "OT.POLICY_NO, " +
+			    "CMD.BANCS_POLICYID, " +
+			    "AT.POLICY_HOLDER, " +
+			    "AT.POLICY_HOLDER_NAME, " +
+			    "OT.REGISTRATIONNO, " +
+			    "AT.SUB_CHANNEL_NAME, " +
+			    "AT.DEALER_CODE, " +
+			    "AT.SUB_CHANNEL2, " +
+			    "AT.AGREEMENT_CODE, " +
+			    "AT.COL_TYPE, " +
+			    "AT.OEM_PREMIUM_AMOUNT, " +
+			    "CMD.SOA_STATUS, " +
+			    "CMD.ERROR " +
+			    "FROM " +
+			    "SOA_OEM.OEM_TATAPV OT " +
+			    "JOIN " +
+			    "SOA_OEM.OEM_SOA_RECORD_CMD CMD ON OT.POLICY_NO = CMD.OEM_POLICY_NUMBER " +
+			    "JOIN " +
+			    "SOA_OEM.OEM_CMD_ALL_TABLE AT ON AT.OEM_POLICY_NUMBER = CMD.OEM_POLICY_NUMBER " +
+			    "WHERE " +
+			    "TO_CHAR(CMD.CREATION_TIME, 'dd-mon-yyyy') = ?";
+
+//		if(object.getDate() != null && !object.getDate().isEmpty()) {
+//		
+//		}
+		List<FailedCases> results = new ArrayList<>();
+		 try (Connection conn = dataSource.getConnection();
+		         PreparedStatement ps = conn.prepareStatement(sql)){
+			 ps.setString(1, object.getDate());
+			
+			 System.out.println(ps);
+			 try(ResultSet rs = ps.executeQuery()){
+				 while(rs.next()) {
+				 FailedCases report = new FailedCases();
+				 report.setPOLICY_NO(rs.getString("POLICY_NO"));
+	                report.setBANCS_POLICYID(rs.getString("BANCS_POLICYID"));
+	                report.setPOLICY_HOLDER(rs.getString("POLICY_HOLDER"));
+	                report.setPOLICY_HOLDER_NAME(rs.getString("POLICY_HOLDER_NAME"));
+	                report.setREGISTRATIONNO(rs.getString("REGISTRATIONNO"));
+	                report.setSUB_CHANNEL_NAME(rs.getString("SUB_CHANNEL_NAME"));
+	                report.setDEALER_CODE(rs.getString("DEALER_CODE"));
+	                report.setSUB_CHANNEL2(rs.getString("SUB_CHANNEL2"));
+	                report.setAGREEMENT_CODE(rs.getString("AGREEMENT_CODE"));
+	                report.setCOL_TYPE(rs.getString("COL_TYPE"));
+	                report.setOEM_PREMIUM_AMOUNT(rs.getString("OEM_PREMIUM_AMOUNT"));
+	                report.setSOA_STATUS(rs.getString("SOA_STATUS"));
+	                report.setERROR(rs.getString("ERROR"));
+	                results.add(report);}
+				 
+			 }
+			 
+		 }
+		 catch (Exception e) {
+		        e.printStackTrace();
+		    }
+		
+		return results;
 	}
 
 	  

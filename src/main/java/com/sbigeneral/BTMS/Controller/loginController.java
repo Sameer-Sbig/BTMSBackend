@@ -94,6 +94,7 @@ import com.sbigeneral.BTMS.Entity.OemReport;
 import com.sbigeneral.BTMS.Entity.PinDetails;
 import com.sbigeneral.BTMS.Entity.ResponseMessage;
 import com.sbigeneral.BTMS.Entity.SearchbyPinDetails;
+import com.sbigeneral.BTMS.Entity.SuccessCases;
 import com.sbigeneral.BTMS.Entity.UploadImage;
 import com.sbigeneral.BTMS.Entity.User;
 import com.sbigeneral.BTMS.Entity.UserDetails;
@@ -500,8 +501,8 @@ public class loginController {
 	    }
 	    return reportList;
 	}
-	
-	
+		
+	@CrossOrigin
 	@PostMapping("/getFilteredData")
 	public List<MisReport> getFilteredPolicyDetails(@RequestBody CustomMisReport object){
 		System.out.println(object);
@@ -525,6 +526,14 @@ public class loginController {
 		
 	}
 	
+	@PostMapping("/getSuccessCases")
+	public List<SuccessCases> getSuccessCases(@RequestBody CustomDate object){
+		return apiService.getSuccessCases(object);
+	}
 	
+	@PostMapping("/getAllCases")
+	public List<FailedCases> getAllCases(@RequestBody CustomDate object){
+		return apiService.getAllCases(object);
+	}
 
 }

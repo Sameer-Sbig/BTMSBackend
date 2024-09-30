@@ -12,15 +12,13 @@
 				"method": "POST",
 				"header": [],
 				"url": {
-					"raw": "http://172.18.115.105:7003/BTMSBackend/getMisReport",
-					"protocol": "http",
+					"raw": "https://ansappsuat.sbigen.in/BTMSBackend/getMisReport",
+					"protocol": "https",
 					"host": [
-						"172",
-						"18",
-						"115",
-						"105"
+						"ansappsuat",
+						"sbigen",
+						"in"
 					],
-					"port": "7003",
 					"path": [
 						"BTMSBackend",
 						"getMisReport"
@@ -44,12 +42,13 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:7002/BTMSBackend/getFilteredData",
-					"protocol": "http",
+					"raw": "https://ansappsuat.sbigen.in/BTMSBackend/getFilteredData",
+					"protocol": "https",
 					"host": [
-						"localhost"
+						"ansappsuat",
+						"sbigen",
+						"in"
 					],
-					"port": "7002",
 					"path": [
 						"BTMSBackend",
 						"getFilteredData"
@@ -73,15 +72,76 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:7002/BTMSBackend/getFailedCases",
-					"protocol": "http",
+					"raw": "https://ansappsuat.sbigen.in/BTMSBackend/getFailedCases",
+					"protocol": "https",
 					"host": [
-						"localhost"
+						"ansappsuat",
+						"sbigen",
+						"in"
 					],
-					"port": "7002",
 					"path": [
 						"BTMSBackend",
 						"getFailedCases"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getSuccessCases",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"date\":\"09-sep-2024\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://ansappsuat.sbigen.in/BTMSBackend/getSuccessCases",
+					"protocol": "https",
+					"host": [
+						"ansappsuat",
+						"sbigen",
+						"in"
+					],
+					"path": [
+						"BTMSBackend",
+						"getSuccessCases"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getAllCases",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"date\":\"13-sep-2024\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://ansappsuat.sbigen.in/BTMSBackend/getAllCases",
+					"protocol": "https",
+					"host": [
+						"ansappsuat",
+						"sbigen",
+						"in"
+					],
+					"path": [
+						"BTMSBackend",
+						"getAllCases"
 					]
 				}
 			},
