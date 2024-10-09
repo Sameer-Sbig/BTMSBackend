@@ -35,7 +35,10 @@ import com.sbigeneral.BTMS.Entity.FailedCases;
 import com.sbigeneral.BTMS.Entity.MisReport;
 import com.sbigeneral.BTMS.Entity.OemReport;
 import com.sbigeneral.BTMS.Entity.PinDetails;
+import com.sbigeneral.BTMS.Entity.PolicyDetails;
 import com.sbigeneral.BTMS.Entity.SuccessCases;
+import com.sbigeneral.BTMS.Entity.UserPolicyDetails;
+import com.sbigeneral.BTMS.Repository.UserPolicyDetailsRepo;
 import com.sbigeneral.BTMS.Service.ApiService;
 
 @Service
@@ -45,6 +48,9 @@ public class ApiServiceImpl implements ApiService {
 	@Autowired
 	private DataSource dataSource;
 
+	
+	@Autowired
+	private UserPolicyDetailsRepo userPolicyDetailsRepo;
 	private static RestTemplate restTemplate = new RestTemplate();
 
 	@Override
@@ -387,6 +393,20 @@ public class ApiServiceImpl implements ApiService {
 		return results;
 	}
 
+	@Override
+	public UserPolicyDetails getAllPolicyDetails(String policyNumber) {
+		// TODO Auto-generated method stub
+		System.out.println("The policy Number is : " +  policyNumber);
+		try {
+			return userPolicyDetailsRepo.fetchDetails(policyNumber);
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			throw new Error();
+		}
+	}
+
+	
 	  
 }
 	

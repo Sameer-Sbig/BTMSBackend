@@ -146,6 +146,35 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "GetAllDetailsBasedOnPolicyNumber",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "TM/PPVBUPSA18943988",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:7002/BTMSBackend/getAllDetailsBasedOnPolicyNumber",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "7002",
+					"path": [
+						"BTMSBackend",
+						"getAllDetailsBasedOnPolicyNumber"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }

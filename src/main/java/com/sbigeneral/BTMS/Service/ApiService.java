@@ -12,7 +12,9 @@ import com.sbigeneral.BTMS.Entity.FailedCases;
 import com.sbigeneral.BTMS.Entity.MisReport;
 import com.sbigeneral.BTMS.Entity.OemReport;
 import com.sbigeneral.BTMS.Entity.PinDetails;
+import com.sbigeneral.BTMS.Entity.PolicyDetails;
 import com.sbigeneral.BTMS.Entity.SuccessCases;
+import com.sbigeneral.BTMS.Entity.UserPolicyDetails;
 
 @Service
 public interface ApiService {
@@ -30,6 +32,8 @@ public interface ApiService {
     public List<SuccessCases> getSuccessCases(CustomDate object);
     
     public List<FailedCases> getAllCases(CustomDate object);
+    
+    public UserPolicyDetails getAllPolicyDetails(String policyNumber);
     
     
 }

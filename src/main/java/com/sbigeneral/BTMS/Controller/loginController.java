@@ -92,13 +92,16 @@ import com.sbigeneral.BTMS.Entity.FailedCases;
 import com.sbigeneral.BTMS.Entity.MisReport;
 import com.sbigeneral.BTMS.Entity.OemReport;
 import com.sbigeneral.BTMS.Entity.PinDetails;
+import com.sbigeneral.BTMS.Entity.PolicyDetails;
 import com.sbigeneral.BTMS.Entity.ResponseMessage;
 import com.sbigeneral.BTMS.Entity.SearchbyPinDetails;
 import com.sbigeneral.BTMS.Entity.SuccessCases;
 import com.sbigeneral.BTMS.Entity.UploadImage;
 import com.sbigeneral.BTMS.Entity.User;
 import com.sbigeneral.BTMS.Entity.UserDetails;
+import com.sbigeneral.BTMS.Entity.UserPolicyDetails;
 import com.sbigeneral.BTMS.Repository.UserDetailsRepo;
+import com.sbigeneral.BTMS.Repository.UserPolicyDetailsRepo;
 import com.sbigeneral.BTMS.Service.ApiService;
 import com.sbigeneral.BTMS.Service.Decrypt;
 import com.sbigeneral.BTMS.Service.Encrypt;
@@ -176,10 +179,11 @@ public class loginController {
 	private FormValidation validation;
 
 	@Autowired
-	UserDetailsRepo userDetailsRepo;
+   private UserDetailsRepo userDetailsRepo;
 	
 
-	
+	@Autowired
+	UserPolicyDetailsRepo userPolicyDetailsRepo;
 	
 	@Autowired
 	SessionFactory sessionFactory;
@@ -534,6 +538,16 @@ public class loginController {
 	@PostMapping("/getAllCases")
 	public List<FailedCases> getAllCases(@RequestBody CustomDate object){
 		return apiService.getAllCases(object);
+	}
+	
+	
+	@PostMapping("/getAllDetailsBasedOnPolicyNumber")
+	public UserPolicyDetails getPolicyDetailsBasedOnPolicyNumber(@RequestBody String policyNo){
+		System.out.println("Policy Number : " +   policyNo);
+//		String OEM_POLICY_NUMBER = obj.getOEM_POLICY_NUMBER();
+		return apiService.getAllPolicyDetails(policyNo);
+		
+		
 	}
 
 }

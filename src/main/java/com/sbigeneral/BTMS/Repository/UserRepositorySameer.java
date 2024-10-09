@@ -7,6 +7,4 @@
 //	
 //	UserSameer findByUsername(String username);
 //}
-package com;
-
 
