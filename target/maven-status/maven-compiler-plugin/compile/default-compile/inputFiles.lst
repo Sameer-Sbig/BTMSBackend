@@ -3,6 +3,7 @@ D:\SpringBootProjects\BTMS\BTMSBBACKEND\src\main\java\com\sbigeneral\BTMS\Contro
 D:\SpringBootProjects\BTMS\BTMSBBACKEND\src\main\java\com\sbigeneral\BTMS\Entity\SuccessCases.java
 D:\SpringBootProjects\BTMS\BTMSBBACKEND\src\main\java\com\sbigeneral\BTMS\Service\UserService.java
 D:\SpringBootProjects\BTMS\BTMSBBACKEND\src\main\java\com\sbigeneral\BTMS\Entity\PinDetails.java
+D:\SpringBootProjects\BTMS\BTMSBBACKEND\src\main\java\com\sbigeneral\BTMS\Entity\UserPolicyDetails.java
 D:\SpringBootProjects\BTMS\BTMSBBACKEND\src\main\java\com\sbigeneral\BTMS\Utill\JwtUtil.java
 D:\SpringBootProjects\BTMS\BTMSBBACKEND\src\main\java\com\sbigeneral\BTMS\ServiceImpl\UserServiceImpl.java
 D:\SpringBootProjects\BTMS\BTMSBBACKEND\src\main\java\com\sbigeneral\BTMS\Utill\GCMUtilty.java
@@ -52,6 +53,7 @@ D:\SpringBootProjects\BTMS\BTMSBBACKEND\src\main\java\com\sbigeneral\BTMS\Except
 D:\SpringBootProjects\BTMS\BTMSBBACKEND\src\main\java\com\sbigeneral\BTMS\model\PasswordEncode.java
 D:\SpringBootProjects\BTMS\BTMSBBACKEND\src\main\java\com\sbigeneral\BTMS\Entity\UserDetails.java
 D:\SpringBootProjects\BTMS\BTMSBBACKEND\src\main\java\com\sbigeneral\BTMS\ServiceImpl\VendorLogoutServiceImpl.java
+D:\SpringBootProjects\BTMS\BTMSBBACKEND\src\main\java\com\sbigeneral\BTMS\Entity\PolicyDetails.java
 D:\SpringBootProjects\BTMS\BTMSBBACKEND\src\main\java\com\sbigeneral\BTMS\Entity\MisReport.java
 D:\SpringBootProjects\BTMS\BTMSBBACKEND\src\main\java\com\sbigeneral\BTMS\model\BussinessSummarryReport.java
 D:\SpringBootProjects\BTMS\BTMSBBACKEND\src\main\java\com\sbigeneral\BTMS\model\UserModel.java
@@ -81,5 +83,6 @@ D:\SpringBootProjects\BTMS\BTMSBBACKEND\src\main\java\com\sbigeneral\BTMS\Servic
 D:\SpringBootProjects\BTMS\BTMSBBACKEND\src\main\java\com\sbigeneral\BTMS\Utill\Commons.java
 D:\SpringBootProjects\BTMS\BTMSBBACKEND\src\main\java\com\sbigeneral\BTMS\Entity\CustomDate.java
 D:\SpringBootProjects\BTMS\BTMSBBACKEND\src\main\java\com\sbigeneral\BTMS\Service\ApiService.java
+D:\SpringBootProjects\BTMS\BTMSBBACKEND\src\main\java\com\sbigeneral\BTMS\Repository\UserPolicyDetailsRepo.java
 D:\SpringBootProjects\BTMS\BTMSBBACKEND\src\main\java\com\sbigeneral\BTMS\Utill\AppConfig.java
 D:\SpringBootProjects\BTMS\BTMSBBACKEND\src\main\java\com\sbigeneral\BTMS\Entity\UploadImage.java

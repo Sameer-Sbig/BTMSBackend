@@ -215,8 +215,19 @@ public class ApiServiceImpl implements ApiService {
 	                + "JOIN SOA_OEM.OEM_CMD_ALL_TABLE AT ON AT.OEM_POLICY_NUMBER = CMD.OEM_POLICY_NUMBER "
 	                + "WHERE to_char(CMD.CREATION_TIME, 'dd-mon-yyyy') BETWEEN '01-09-2024' AND '30-09-2024' "
 	                + "GROUP BY to_char(CMD.CREATION_TIME, 'dd-mon-yyyy')";
+	     
+	     String query1 = "SELECT "
+	    	     + "to_char(CMD.CREATION_TIME, 'dd-mon-yyyy') as Created_on, "
+	                + "Count(AT.SOA_TRANSACTIONID) as Total_Policy, "
+	    	     + "COUNT(CASE WHEN CMD.SOA_STATUS IN ('COLLECTION_STAGE_COMPLETED','PARTY_STAGE_COMPLETED','COMPLETED_ISSUEPOLICY_STAGE','ISSUEQUOTE_STAGE_COMPLETED') THEN 1 END ) as Success,"
+	             + "COUNT(CASE WHEN CMD.SOA_STATUS IN ('Insert to common DB','PARTY_STAGE_FAILED','PROPOSAL_STAGE_FAILED','COLLECTION_STAGE_FAILED','ISSUEQUOTE_STAGE_FAILED') THEN 1 END ) as Fail"
+	             + "FROM SOA_OEM.OEM_TATAPV OT "
+	                + "JOIN SOA_OEM.OEM_SOA_RECORD_CMD CMD ON OT.POLICY_NO = CMD.OEM_POLICY_NUMBER "
+	                + "JOIN SOA_OEM.OEM_CMD_ALL_TABLE AT ON AT.OEM_POLICY_NUMBER = CMD.OEM_POLICY_NUMBER "
+	                + "WHERE to_char(CMD.CREATION_TIME, 'dd-mon-yyyy') BETWEEN '01-09-2024' AND '30-09-2024' "
+	                + "GROUP BY to_char(CMD.CREATION_TIME, 'dd-mon-yyyy')";	
 	        try (Connection conn = dataSource.getConnection();
-	             PreparedStatement stmt = conn.prepareStatement(query);
+	             PreparedStatement stmt = conn.prepareStatement(query1);
 	             ResultSet rs = stmt.executeQuery()) {
 
 	            while (rs.next()) {
@@ -242,8 +253,8 @@ public class ApiServiceImpl implements ApiService {
                  "CMD.SOA_STATUS, CMD.ERROR from SOA_OEM.OEM_TATAPV OT " +
                  "join SOA_OEM.OEM_SOA_RECORD_CMD CMD on OT.POLICY_NO = CMD.OEM_POLICY_NUMBER " +
                  "join SOA_OEM.OEM_CMD_ALL_TABLE AT on AT.OEM_POLICY_NUMBER = CMD.OEM_POLICY_NUMBER " +
-                 "where CMD.SOA_STATUS in ('COLLECTION_STAGE_COMPLETED', 'PROPOSAL_STAGE_COMPLETED', 'Insert to common DB', " +
-                 "'PARTY_STAGE_COMPLETED', 'ISSUEQUOTE_STAGE_COMPLETED', 'PARTY_STAGE_FAILED', 'PROPOSAL_STAGE_FAILED') " +
+                 "where CMD.SOA_STATUS in ( 'Insert to common DB', " +
+                 "'PARTY_STAGE_FAILED', 'PROPOSAL_STAGE_FAILED', 'COLLECTION_STAGE_FAILED,'ISSUEQUOTE_STAGE_FAILED') " +
                  "and to_char(CMD.CREATION_TIME, 'dd-mon-yyyy') between ? and ?";
 //		if(object.getDate() != null && !object.getDate().isEmpty()) {
 //		
@@ -294,8 +305,8 @@ public class ApiServiceImpl implements ApiService {
 	             "FROM SOA_OEM.OEM_TATAPV OT " +
 	             "JOIN SOA_OEM.OEM_SOA_RECORD_CMD CMD ON OT.POLICY_NO = CMD.OEM_POLICY_NUMBER " +
 	             "JOIN SOA_OEM.OEM_CMD_ALL_TABLE AT ON AT.OEM_POLICY_NUMBER = CMD.OEM_POLICY_NUMBER " +
-	             "WHERE CMD.SOA_STATUS IN ('COLLECTION_STAGE_COMPLETED', 'PROPOSAL_STAGE_COMPLETED', " +
-	             "'Insert to common DB', 'PARTY_STAGE_SUCCESS', 'ISSUEQUOTE_STAGE_SUCCESS') " +
+	             "WHERE CMD.SOA_STATUS IN ('COLLECTION_STAGE_COMPLETED'" +
+	             "'PARTY_STAGE_COMPLETED', 'COMPLETED_ISSUEPOLICY_STAGE', 'ISSUEQUOTE_STAGE_COMPLETED) " +
 	             "AND TO_CHAR(CMD.CREATION_TIME, 'dd-mon-yyyy') BETWEEN ? AND ?";
 		 try (Connection conn = dataSource.getConnection();
 		         PreparedStatement ps = conn.prepareStatement(sql)){

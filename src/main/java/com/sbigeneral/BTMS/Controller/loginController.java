@@ -545,6 +545,7 @@ public class loginController {
 	public UserPolicyDetails getPolicyDetailsBasedOnPolicyNumber(@RequestBody String policyNo){
 		System.out.println("Policy Number : " +   policyNo);
 //		String OEM_POLICY_NUMBER = obj.getOEM_POLICY_NUMBER();
+		System.out.println(apiService.getAllPolicyDetails(policyNo));
 		return apiService.getAllPolicyDetails(policyNo);
 		
 		
