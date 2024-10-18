@@ -64,7 +64,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"date\":\"13-sep-2024\"\r\n}",
+					"raw": "{\r\n    \"date\":\"18-oct-2024\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -94,7 +94,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"date\":\"09-sep-2024\"\r\n}",
+					"raw": "{\r\n    \"date\":\"15-oct-2024\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -154,23 +154,149 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "TM/PPVBUPSA18943988",
+					"raw": "TM/PPVBU19420541",
 					"options": {
 						"raw": {
-							"language": "json"
+							"language": "text"
 						}
 					}
 				},
 				"url": {
-					"raw": "http://localhost:7002/BTMSBackend/getAllDetailsBasedOnPolicyNumber",
-					"protocol": "http",
+					"raw": "https://ansappsuat.sbigen.in/BTMSBackend/getAllDetailsBasedOnPolicyNumber",
+					"protocol": "https",
 					"host": [
-						"localhost"
+						"ansappsuat",
+						"sbigen",
+						"in"
 					],
-					"port": "7002",
 					"path": [
 						"BTMSBackend",
 						"getAllDetailsBasedOnPolicyNumber"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "GetAllDetailsBasedOnPolicyNumber",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "TM/PPVBU19420541",
+							"options": {
+								"raw": {
+									"language": "text"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:7002/BTMSBackend/getAllDetailsBasedOnPolicyNumber",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7002",
+							"path": [
+								"BTMSBackend",
+								"getAllDetailsBasedOnPolicyNumber"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Vary",
+							"value": "Origin"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Method"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Headers"
+						},
+						{
+							"key": "Set-Cookie",
+							"value": "JSESSIONID=E06B7A301352BFDBA308E1441FA0E0ED; Path=/BTMSBackend; HttpOnly"
+						},
+						{
+							"key": "Set-Cookie",
+							"value": "JSESSIONID=9D3E9E3CA1417B32FEBE64318C311FE9; Max-Age=0; Expires=Thu, 01 Jan 1970 00:00:10 GMT; Path=/"
+						},
+						{
+							"key": "Set-Cookie",
+							"value": "JSESSIONID=E06B7A301352BFDBA308E1441FA0E0ED; Max-Age=43200; HttpOnly; Secure; Path=/PHS/; SameSite=Strict"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "1; mode=block"
+						},
+						{
+							"key": "Content-Security-Policy",
+							"value": "default-src 'self'; script-src 'self'"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, must-revalidate"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 14 Oct 2024 07:18:48 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"lossofincome\": \"N\",\n    \"enhancepapd\": \"N\",\n    \"policy_HOLDER\": \"NA\",\n    \"dealer_CODE\": \"300B70000\",\n    \"col_TYPE\": \"NEFC\",\n    \"product_CODE\": \"3301\",\n    \"ckyc_NUMBER\": \"10088057493026\",\n    \"gender\": null,\n    \"entry_DATE\": \"2024-10-12 00:00:00\",\n    \"entry_TIME\": \"13:38:00\",\n    \"vehicle_TYPE\": \"22\",\n    \"business_TYPE\": \"ROVER\",\n    \"policy_TENURE\": \"1X1\",\n    \"ckyc_REMARKS\": null,\n    \"policy_TYPE\": \"PKG\",\n    \"policy_PLAN\": \"1801\",\n    \"ncb_STATUS\": null,\n    \"inward_NUMBER\": null,\n    \"age_OF_DRIVER\": \"41\",\n    \"chasis_NUMBER\": \"MAT631548MPJ82464\",\n    \"pin_NUMBER\": null,\n    \"go_GREEN\": null,\n    \"sector\": \"SOCIAL\",\n    \"remarks\": null,\n    \"model_YEAR\": \"2021\",\n    \"head_OFFICE\": null,\n    \"engine_NUMBER\": \"463438854133858\",\n    \"odred\": \"2025-10-12 00:00:00\",\n    \"lead_NUMBER\": null,\n    \"road_TYPE\": \"CR\",\n    \"term_UNIT\": \"G\",\n    \"branch_CODE\": \"00035\",\n    \"country\": \"IND\",\n    \"sub_CHANNEL2\": \"TATA Private Car,Tata Motors\",\n    \"pared\": \"2025-10-12 00:00:00\",\n    \"total_IDV\": null,\n    \"vehicle_MAKE\": \"26\",\n    \"individual_SI\": \"0\",\n    \"engine_GUARD\": null,\n    \"vehicle_IDV\": \"1231740\",\n    \"age\": \"41\",\n    \"rta_CODE\": \"779\",\n    \"nominee_NAME\": \"MEENU GUPTA\",\n    \"vehicle_COLOR\": null,\n    \"vehicle_MODEL\": \"567\",\n    \"vehicle_AGE\": \"3\",\n    \"type_OF_FUEL\": \"Diesel\",\n    \"emi_PROTECTOR\": \"N\",\n    \"membership_NO\": null,\n    \"emi_AMOUNT\": null,\n    \"zone\": null,\n    \"original_IDV\": \"1231740\",\n    \"imt54\": null,\n    \"imt53\": null,\n    \"imt55\": null,\n    \"geo_EXT_NEPAL\": \"N\",\n    \"multi_ELE_IDV\": \"0\",\n    \"imt44\": null,\n    \"imt50\": null,\n    \"imt51\": null,\n    \"imt49\": null,\n    \"towingcharg\": \"N\",\n    \"hospodcover\": \"N\",\n    \"horse_POWER\": null,\n    \"trailers_IDV\": null,\n    \"driver_GENDER\": null,\n    \"imt52\": null,\n    \"side_CAR\": null,\n    \"imt48\": null,\n    \"cpacover\": \"Y\",\n    \"vvncbcover\": \"N\",\n    \"basictp\": null,\n    \"engineguard\": \"N\",\n    \"basicroadside\": \"N\",\n    \"trailersod\": \"N\",\n    \"retinvocover\": null,\n    \"vextensionod\": \"N\",\n    \"lltoemployee\": \"N\",\n    \"addroadside\": \"N\",\n    \"trgcover\": null,\n    \"geoareaod\": null,\n    \"consumablecov\": \"N\",\n    \"hospupcover\": \"N\",\n    \"basicod\": null,\n    \"enhancedpaod\": \"N\",\n    \"inbuiltcnglpg\": null,\n    \"rtrodcover\": \"N\",\n    \"insuredpa\": \"N\",\n    \"hosppdcover\": \"N\",\n    \"sccover\": \"N\",\n    \"extenstiontp\": \"N\",\n    \"llpaiddriver\": \"Y\",\n    \"unnamedpa\": \"N\",\n    \"enhancedpapd\": \"N\",\n    \"llemployees\": \"N\",\n    \"fibreglass\": \"N\",\n    \"helmetprot\": \"N\",\n    \"trailerstp\": \"N\",\n    \"proncbcover\": \"N\",\n    \"extensionod\": \"N\",\n    \"tyrerimcover\": \"N\",\n    \"rtrcover\": \"N\",\n    \"cnglpgtp\": \"N\",\n    \"imt44OD\": \"N\",\n    \"rtrtpcover\": \"N\",\n    \"imt44TP\": \"N\",\n    \"enhancepaod\": \"N\",\n    \"imt37\": \"N\",\n    \"imt43\": \"N\",\n    \"imt37A\": \"N\",\n    \"policy_HOLDER_NAME\": \"AMIT KUMAR GUPTA\",\n    \"oem_PREMIUM_AMOUNT\": \"21016\",\n    \"agreement_CODE\": null,\n    \"sub_CHANNEL_NAME\": \"TATA\",\n    \"registration_NUMBER\": \"UP63AS9678\",\n    \"policy_EXPIRY_DATE\": \"2025-10-12 00:00:00\",\n    \"policy_EXPIRY_TIME\": \"00:00:00\",\n    \"transfer_OF_NCB\": \"Y\",\n    \"is_CKYC_VERIFIED\": \"NA\",\n    \"ckyc_UNIQUE_IDENTIFIER\": \"KPVBUSBI122076\",\n    \"commercial_TYPE\": \"NA\",\n    \"exemption_CATEGORY\": null,\n    \"policy_INCEPTION_DATE\": \"2024-10-13 00:00:00\",\n    \"issuance_SOURCE\": \"OEM\",\n    \"policy_DURATION\": \"1\",\n    \"co_INSURANCE_APPLICABLE\": null,\n    \"policy_ISSUED_DATE\": null,\n    \"option_FOR_CALCULATION\": \"Yearly\",\n    \"policy_INCEPTION_TIME\": \"00:00:00\",\n    \"user_BRANCH_NAME\": null,\n    \"ckyc_DOCUMENT_UPLOAD\": \"Y\",\n    \"oem_POLICY_NUMBER\": \"TM/PPVBU19420541\",\n    \"proposal_IS_BREAK_IN\": \"N\",\n    \"active_TP_POLICY_TERM\": null,\n    \"misc_VEHICLE_SUB_TYPE\": null,\n    \"previous_POLICY_NUMBER\": \"18287106\",\n    \"previous_POLICY_AVAILABLE\": \"Y\",\n    \"active_TP_INS_COMPANY_NAME\": null,\n    \"active_TP_BRANCH_ADDRESS\": null,\n    \"prev_INSURANCE_COMPANY_NAME\": \"IFFCO Tokio General Insurance Co. Ltd.\",\n    \"previous_COMPANY_EMAIL_ID\": null,\n    \"previous_POLICY_TERM\": \"01\",\n    \"renewal_STATUS\": null,\n    \"renewal_APPLICABLE\": \"No\",\n    \"previous_POLICY_EXPIRY_DATE\": \"2024-10-12 00:00:00\",\n    \"is_CUST_ID_SAME_PAYER_ID\": \"N\",\n    \"active_TP_POLICY_INCEPT_DATE\": null,\n    \"claim_APPLICABLE\": null,\n    \"previous_POLICY_TYPE\": \"ODO\",\n    \"active_TP_POLICY_NUMBER\": null,\n    \"reinstate_REQUIRED\": null,\n    \"active_TP_POLICY_EXPIRY_DATE\": null,\n    \"vehicle_INSPECTION_STATUS\": null,\n    \"are_YOU_ENTITLED_TO_NCB\": \"Y\",\n    \"driving_EXPERIENCE_IN_YEARS\": null,\n    \"inspection_DATE\": null,\n    \"inspection_REASON\": null,\n    \"ncb_DISCOUNT_AMOUNT\": \"2883\",\n    \"inspection_WAIVER\": \"N\",\n    \"does_DRIVER_SUFFER_DEFECTIVE\": \"N\",\n    \"average_DAILY_USE_OF_VEHICLE\": \"50kms\",\n    \"location_FOR_PARK_DURING_DAY\": \"IC\",\n    \"tyre_SERIAL_NUMBER\": null,\n    \"ncb_ON_PREVIOUS_POLICY\": \"25\",\n    \"inspection_AGENCY_NAME\": null,\n    \"proof_PROVIDED_FOR_NCB\": \"RNWLN\",\n    \"driver_BEEN_INVOL_CONVICTED\": \"N\",\n    \"is_VEHICLE_IN_GOOD_CONDITION\": \"Y\",\n    \"applicable_NCB_PERCENT\": \"35\",\n    \"ncb_RECOVERY_REASON\": null,\n    \"registration_NUMBER_FORMAT\": \"S\",\n    \"computation_TYPE\": null,\n    \"use_OF_VEHICLE\": \"PVT\",\n    \"depreciation_REIMBURSEMENT\": \"Y\",\n    \"emergency_MEDICAL_EXPENSE\": null,\n    \"return_TO_INVOICE\": null,\n    \"vehicle_SPECIFICATION\": \"5596\",\n    \"tyre_AND_RIM_GUARD_DED_AMOUNT\": null,\n    \"hospital_CASH_OWNER_DRIVER_SI\": null,\n    \"enhanced_PA_UN_NAMED_PASS_SI\": null,\n    \"registration_NO_BOX_3\": \"AS\",\n    \"cover_FOR_CONSUMABLES\": \"N\",\n    \"registration_NO_BOX_2\": \"63\",\n    \"type_OF_MODIFICATION\": null,\n    \"registration_NO_BOX_1\": \"UP\",\n    \"hospital_CASH_PAID_DRIVER_SI\": null,\n    \"date_OF_REGISTRATION\": \"2021-10-13 00:00:00\",\n    \"registration_NO_BOX_4\": \"9678\",\n    \"enhanced_PA_OWNER_DRIVER_SI\": null,\n    \"tyre_AND_RIM_GUARD\": null,\n    \"emi_DEDUCTIBLE_AMOUNT\": null,\n    \"enhanced_PA__PAID_DRIVER_SI\": null,\n    \"presence_OF_AIRBAGS\": null,\n    \"inconvenience_ALLOWANCE\": null,\n    \"cnglpg_KIT_IDV\": \"0\",\n    \"multiple_ACCESSORIES_PRESENT\": null,\n    \"name_OF_APPOINTEE\": null,\n    \"risk_EXPIRY_TIME\": \"23:59:59\",\n    \"is_CNGLPG_EXTRA_FITTED\": \"NO\",\n    \"year_OF_COVERAGE\": \"1\",\n    \"value_OF_EXTRA_NON_ELECTRICAL\": \"0\",\n    \"basic_ROAD_SIDE_ASSISTANCE\": null,\n    \"risk_EXPIRY_DATE\": \"2025-10-12 00:00:00\",\n    \"idv_OF_ACCESSORIES\": null,\n    \"reason_FOR_WAIVER\": null,\n    \"key_REPLACEMENT_COVER\": \"N\",\n    \"protection_OF_NCB\": \"N\",\n    \"rsa_VENDOR_NAME\": null,\n    \"relationship_WITH_OWNER\": \"S\",\n    \"risk_INCEPTION_TIME\": \"00:00:00\",\n    \"loss_OF_PERSONAL_BELONGINGS\": \"N\",\n    \"appointee_RELATIONSHIP\": null,\n    \"road_TAX_AMOUNT\": null,\n    \"additional_TOWING_CHARGES\": null,\n    \"cpa_COVER_WAIVER_REQUIRED\": \"N\",\n    \"risk_INCEPTION_DATE\": \"2024-10-13 00:00:00\",\n    \"imported_WITHOUT_CUSTOM_IMT19\": null,\n    \"pa_COVER_UNNAMED_PERSON_IMT16\": null,\n    \"name_OF_ASSOCIATION\": null,\n    \"premise_ADDRESS\": null,\n    \"designed_BLIND_HANDICAP_IMT12\": \"N\",\n    \"imposed_EXCESS\": null,\n    \"no_OF_LL_TO_EMPLOYEES_IMT29\": \"0\",\n    \"tppd_COVER_TO_THE_LIMIT_IMT20\": \"N\",\n    \"voluntary_DEDUCTABLE_IMT22A\": null,\n    \"member_AUTOMOBILE_ASSO_IMT8\": \"N\",\n    \"compulsary_DEDUCTABLE_IMT22\": \"2000\",\n    \"is_LIFE_MEMBER\": null,\n    \"no_OF_UNNAMED_PERSONS\": \"0\",\n    \"number_OF_NAMED_PERSONS\": null,\n    \"rally_TYPE_IMT31\": null,\n    \"no_OF_LL_TO_PAID_DRIVERIMT28\": \"1\",\n    \"date_OF_MEMBERSHIP_EXPIRY\": null,\n    \"whether_VINTAGE_CAR_IMT2\": null,\n    \"individual_SI_FOR_IMT_15\": null,\n    \"individual_SI_FOR_IMT_16\": \"0\",\n    \"start_DATE_OF_RALLY_IMT31\": null,\n    \"helmet_PROTECTION_SI\": null,\n    \"fibre_GLASS_TANK_UNIT\": null,\n    \"imt_46_LL_TO_PASSENGERS\": \"N\",\n    \"rally_ADDITIONAL_EXCESS\": null,\n    \"end_DATE_OF_RALLY_IMT31\": null,\n    \"no_OF_DAYS_FOR_RALLY_IMT31\": null,\n    \"accident_SOLDIER_SAILOR_IMT32\": null,\n    \"insuredinterest\": \"PVTCAR\",\n    \"go_SMART_FLEXI_APPLICABLE\": null,\n    \"side_CAR_SUM_INSURED\": null,\n    \"association_NAME\": null,\n    \"no_OF_PERSONS_FOR_IMT_32\": null,\n    \"attached_TRAILER_SI\": null,\n    \"kilometer_BAND\": null,\n    \"actual_KILOMETER\": null,\n    \"body_STYLE_DESCRIPTION\": null,\n    \"number_OF_TRAILERS\": null,\n    \"built_IN_LPG_KIT_IMT23\": null,\n    \"used_PRIVATE_PURPOSE_IMT34\": null,\n    \"helmet_PROTECTIONS\": null,\n    \"pa_COVER_PILLION_RIDER_IMT16\": null,\n    \"driving_LICENCE_NUMBER\": null,\n    \"loss_OF_ACCESSORIES_IMT33\": null,\n    \"geo_EXT_BHUTAN\": \"N\",\n    \"trgcover_TYRE1_MFYR\": null,\n    \"indemnity_TO_HIRER\": null,\n    \"si_FOR_LOSS_OF_ACCESSORIES\": null,\n    \"trgcover_TYRE2_SRNO\": null,\n    \"trgcover_TYRE3_MFYR\": null,\n    \"loss_OF_INCOME_DEDUCTIBLE\": null,\n    \"geo_EXT_MALDIVES\": \"N\",\n    \"vehicle_USED_DRIVING_TUITION\": null,\n    \"over_TURNING_COVER\": null,\n    \"trgcover_TYRE3_SRNO\": null,\n    \"geo_EXT_BANGLADESH\": \"N\",\n    \"type_OF_PERMIT\": null,\n    \"proposed_USAGE\": null,\n    \"trgcover_TYRE1_SRNO\": null,\n    \"theft_AND_CONVERSION_IMT43\": null,\n    \"geo_EXT_PAKISTAN\": \"N\",\n    \"trgcover_TYRE2_MFYR\": null,\n    \"geo_EXT_SRILANKA\": \"N\",\n    \"driving_LICENSE_EXPIRY_DATE\": null,\n    \"medicalexpenses\": \"N\",\n    \"unpapracpddrvcln\": \"N\",\n    \"enhancedunnamed\": \"N\",\n    \"multi_ELE_ACCESS_DESC\": null,\n    \"multi_NON_ELE_ACCESS_DESC\": null,\n    \"elctricelectrnicaccs\": null,\n    \"trailer_YEAR_OF_MANF\": null,\n    \"trailer_REG_NO\": null,\n    \"multi_ELE_ITEM_DESC\": null,\n    \"multi_NON_ELE_IDV\": \"0\",\n    \"vextensionrcsptp\": \"N\",\n    \"emiprotectioncover\": \"N\",\n    \"vkeyreplacementcov\": \"N\",\n    \"nonelectricalacsryod\": \"N\",\n    \"extensiongeotp\": \"N\",\n    \"multi_NON_ELE_ITEM_DESC\": null,\n    \"inconveniencecover\": \"N\",\n    \"nmdpapracpddrvcl\": \"N\",\n    \"pasoldrssailorsairmn\": \"N\",\n    \"trgcover_TYRE4_MFYR\": null,\n    \"cnglpgbifueltp\": null,\n    \"externallylpgcng\": \"N\",\n    \"trailer_CHASSIS_NO\": null,\n    \"trgcover_TYRE4_SRNO\": null,\n    \"lltopaiddriver\": \"Y\",\n    \"depreimbursement\": \"N\",\n    \"zdrivingtuitions\": \"N\",\n    \"consumablescover\": \"N\",\n    \"geographicaltp\": \"N\",\n    \"odcommercialprivate\": \"N\",\n    \"hospitalcashod\": \"N\",\n    \"fibreglasstank\": \"N\",\n    \"depreciationreim\": \"Y\",\n    \"medicalexpense\": \"N\",\n    \"protectionofncb\": \"N\",\n    \"prsnlacdncvpddrvcln\": \"N\",\n    \"inconveniencemaster\": \"N\",\n    \"bifuelcnglpgod\": \"N\",\n    \"hospitalcashpd\": \"N\",\n    \"keyreplacementcov\": \"N\",\n    \"addtowingcharge\": \"N\",\n    \"fibreglassfueltank\": \"N\",\n    \"lossofpersonal\": \"N\",\n    \"rtrtpcovermaster\": \"N\",\n    \"drivingtutions\": \"N\",\n    \"ypcommercialpvt\": \"N\",\n    \"returntoinvoice\": null,\n    \"nonelectricalacces\": \"N\",\n    \"vehiclesimported\": \"N\",\n    \"externallycnglpg\": \"N\",\n    \"accessoriesloss\": \"N\",\n    \"patopaidclncon\": \"N\",\n    \"vdrivingtuitions\": \"N\",\n    \"inbuiltcnglpgod\": \"N\",\n    \"financier_BRANCH\": \"VARANASI\",\n    \"gstn_STATE_CODE\": null,\n    \"financier_NAME\": \"HDFC BANK LTD.\",\n    \"claim1_LOSS_DATE\": null,\n    \"proposer_CKYC_NO\": \"10088057493026\",\n    \"col_BANK_BRANCH\": null,\n    \"soa_TRANSACTIONID\": \"1927fe4a-759a-437e-9463-8f83d50f8384\",\n    \"col_RECIEVED_DATE\": \"10/12/2024\",\n    \"date_OF_INCORPORATION\": null,\n    \"instrumentnumber\": \"113500621701\",\n    \"financier_AGGREMENT_TYPE\": \"HYP\",\n    \"financer_LOAN_ACC_NO\": \"2T734546TE\",\n    \"proposal_IDENTIFICATION_NUMBER\": null,\n    \"additional_ROADSIDE_ASSISTANCE\": null,\n    \"is_CAR_USED_DRIVING_TUITION_PU\": null,\n    \"value_OF_EXTRA_ELECTR_ELECTRON\": \"0\",\n    \"extension_OF_GEOGRAPHICAL_IMT1\": \"N\",\n    \"veh_FIT_ANTITHEFT_DEVICE_IMT10\": \"N\",\n    \"pa_COVER_TO_PAID_DRIVERS_IMT17\": \"N\",\n    \"ll_TO_NFPP_NOT_EMPLOYEE_IMT37A\": null,\n    \"use_LIMIT_TO_OWN_PREMISE_IMT13\": null,\n    \"is_CAR_USED_DEMONSTRATION_PURP\": null,\n    \"has_ANY_INSURANCE_COMPANY_EVER\": null,\n    \"hospital_CASH_UN_NAMED_PASS_SI\": null,\n    \"loss_OF_PERSONAL_BELONGINGS_SI\": null,\n    \"pa_COVER_TO_NAMED_PERSON_IMT15\": null,\n    \"no_OF_PAID_DRIVER_CLEA_CONDUCT\": null,\n    \"previous_POLICY_INCEPTION_DATE\": \"2023-10-13 00:00:00\",\n    \"number_OF_CLAIM_ON_PREV_POLICY\": \"0\",\n    \"location_FOR_PARK_DURING_NIGHT\": \"IC\",\n    \"ll_TO_NFPP_EMP_OUTSIDEWC_IMT37\": null,\n    \"no_OF_LL_PD_CLEAN_CONDUC_IMT40\": null,\n    \"renewal_NOTICE_TO_BE_GENERATED\": \"N\",\n    \"no_OF_PERSON_EMPL_IMT39_IMT39A\": null,\n    \"per_DAY_BENEFIT_LOSS_OF_INCOME\": \"0\",\n    \"prev_INSURANCE_COMPANY_ADDRESS\": \"HARYANA GURGAON\",\n    \"number_OF_DAY_F_LOSS_OF_INCOME\": null,\n    \"odimt23\": \"N\",\n    \"lltoemployed\": \"N\",\n    \"imt47\": \"N\",\n    \"emiprotector\": \"N\",\n    \"imt46\": \"N\",\n    \"imt23\": \"N\",\n    \"party_TYPE\": \"I\",\n    \"first_NAME\": \"AMIT KUMAR GUPTA\",\n    \"imt40\": \"N\",\n    \"middle_NAME\": null,\n    \"last_NAME\": null,\n    \"imt39\": \"N\",\n    \"sex\": \"M\",\n    \"nationality\": \"IN\",\n    \"occupation\": null,\n    \"vehicleimport\": \"N\",\n    \"imt39A\": \"N\",\n    \"extngeood\": \"N\",\n    \"reciept_NUM\": null,\n    \"cd_ACCOUNT_NO\": null,\n    \"email1\": null,\n    \"salutation\": \"Mr\",\n    \"telephone_NO\": null,\n    \"address3\": null,\n    \"payer_TYPE\": \"AGENT\",\n    \"channel_NAME\": \"OEM\",\n    \"pincode\": \"231304\",\n    \"col_DATE\": \"10/12/2024\",\n    \"mobile_NO\": \"7985729307\",\n    \"date_OF_BIRTH\": \"1983-04-04\",\n    \"address2\": \"SADDUPUR MOHANA CHUNAR\",\n    \"email\": \"brijlaxfiat@gmail.com\",\n    \"address1\": \"S/O ANIL KUMAR GUPTA\",\n    \"company_NAME\": null,\n    \"proposer_PAN\": \"AJVPG9705C\",\n    \"whatsapp_NO\": null,\n    \"amount\": \"24800\",\n    \"col_BANK_NAME\": null,\n    \"misc_3\": null,\n    \"misc_4\": null,\n    \"misc_8\": null,\n    \"misc_7\": null,\n    \"misc_6\": null,\n    \"misc_10\": null,\n    \"misc_5\": null,\n    \"misc_9\": null,\n    \"misc_1\": null,\n    \"claim1_AMOUNT\": null,\n    \"claim1_YEAR\": null,\n    \"claim1_TYPE\": null,\n    \"gstn_NUMBER\": null,\n    \"misc_2\": null\n}"
+				}
+			]
+		},
+		{
+			"name": "getOemReport",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "https://ansappsuat.sbigen.in/BTMSBackend/getOemReport",
+					"protocol": "https",
+					"host": [
+						"ansappsuat",
+						"sbigen",
+						"in"
+					],
+					"path": [
+						"BTMSBackend",
+						"getOemReport"
 					]
 				}
 			},
